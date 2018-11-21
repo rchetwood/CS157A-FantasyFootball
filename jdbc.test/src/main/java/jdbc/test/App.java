@@ -6,9 +6,9 @@ import java.sql.*;
 public class App {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "oracle.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://cs157afantasyfootball.cpfpd4dqgcvr.us-east-1.rds.amazonaws.com:3306/CS157AFantasyFootball";
+	static final String DB_URL = "jdbc:mysql://cs157afantasyfootball2.cpfpd4dqgcvr.us-east-1.rds.amazonaws.com:3306/CS157AFF";
 	//  Database credentials
-	static final String USER = "root";
+	static final String USER = "CS157AFF";
 	static final String PASS = "CS157A010949601";
 
 	public static void main(String[] args) {
