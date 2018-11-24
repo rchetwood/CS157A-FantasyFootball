@@ -3,6 +3,8 @@ package jdbc.test;
 //STEP 1. Import required packages
 import java.sql.*;
 
+import Models.Player;
+
 public class App {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "oracle.jdbc.Driver";  
