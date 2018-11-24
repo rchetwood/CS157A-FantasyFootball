@@ -17,7 +17,6 @@ public class ConnectionFactory {
 
 		try {
 			Class.forName(JDBC_DRIVER);
-			System.out.println("Connecting to database...");
 			return DriverManager.getConnection(DB_URL_PRODUCTION,USER,PASS);
 
 		}
