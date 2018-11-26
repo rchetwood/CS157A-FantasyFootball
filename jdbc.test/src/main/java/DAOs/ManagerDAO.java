@@ -14,8 +14,13 @@ public class ManagerDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public Manager retrieve(int id) {
+	
+	public List<Manager> retrieveAnAccountsManagers(int accountID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Manager retrieveAManager(int managerID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

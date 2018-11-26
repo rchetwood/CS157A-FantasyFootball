@@ -27,7 +27,6 @@ public class AccountDAO {
 			ps.setString(2, account.getLastname());
 			ps.setString(3, account.getEmail());
 			ps.setString(4, account.getPassword());
-
 			ps.execute();
 			ps.close();
 		}
