@@ -19,7 +19,8 @@ import Models.League;
 public class LeagueDAOTest {
 	
 	private final int TEST_NUMBER_OF_TEAMS = 3;
-	private final java.sql.Date TEST_DRAFT_DATE = new java.sql.Date(new java.util.Date().getTime());
+	private final java.sql.Date TEST_DRAFT_DATE = 
+			new java.sql.Date(System.currentTimeMillis());
 	
 	private LeagueDAO leagueDAO;
 
@@ -61,11 +62,45 @@ public class LeagueDAOTest {
 				resultLeague = LeagueDAO.extractLeague(rs);
 			}
 			
-			assert(resultLeague.getDraft_date().equals(TEST_DRAFT_DATE) 
-					&& resultLeague.getNumber_of_teams() == TEST_NUMBER_OF_TEAMS);
+			// test
+			assertTrue(resultLeague.getDraft_date().toString().equals(TEST_DRAFT_DATE.toString())); 
+			assertTrue(resultLeague.getNumber_of_teams() == TEST_NUMBER_OF_TEAMS);
 		}
 		catch(LeagueDAOException e) {
-			
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				League resultLeague = new League();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
+						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+				ps.setInt(1, TEST_NUMBER_OF_TEAMS);
+				ps.setDate(2, TEST_DRAFT_DATE);
+				
+				ResultSet rs = ps.executeQuery();
+				if(rs.next()) {
+					resultLeague = LeagueDAO.extractLeague(rs);
+				}
+				
+				ps = conn.prepareStatement("DELETE "
+						+ "FROM League "
+						+ "WHERE League_ID=?");
+				ps.setInt(1, resultLeague.getLeagueID());
+				ps.executeUpdate();
+				ps.close();
+			} 
+			catch (SQLException e) {
+				System.err.println("Unable to delete test entry.");
+				e.printStackTrace();
+				fail();
+			}
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.err.println("Unable to close connection.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -88,12 +123,15 @@ public class LeagueDAOTest {
 	public void testDelete() throws SQLException, LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		try {
+			// create league to be inserted db
 			League league = new League();
 			League resultLeague = new League();
 			
-			league.setLeagueID(TEST_NUMBER_OF_TEAMS);
+			// set values
+			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS);
 			league.setDraft_date(TEST_DRAFT_DATE);
 
+			// create the league in sb
 			leagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -120,12 +158,12 @@ public class LeagueDAOTest {
 			
 			assertTrue(!rs.next());
 		}
-		catch(AccountDAOException e) {
+		catch(LeagueDAOException e) {
 			e.printStackTrace();
 		}
 		finally {
 			try {
-				League resultLeague = new League();;
+				League resultLeague = new League();
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS);

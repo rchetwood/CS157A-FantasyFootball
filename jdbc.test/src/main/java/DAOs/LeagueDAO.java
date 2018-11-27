@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import Exceptions.AccountDAOException;
 import Exceptions.LeagueDAOException;
@@ -18,7 +20,7 @@ public class LeagueDAO {
 	private final String RETRIEVE_LEAGUE = "SELECT * FROM League WHERE leagueID=?";
 	private final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=? "
 			+ "WHERE leagueID=?";
-	private final String DELETE_LEAGUE = "DELETE FROM League WHERE LeagueID=?";
+	private final String DELETE_LEAGUE = "DELETE FROM League WHERE League_ID=?";
 	
 	public void create(League league) throws  LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
@@ -26,7 +28,6 @@ public class LeagueDAO {
 			PreparedStatement ps = conn.prepareStatement(CREATE_LEAGUE);
 			ps.setInt(1, league.getNumber_of_teams());
 			ps.setDate(2, league.getDraft_date());
-			System.out.println(ps.toString());
 			ps.executeUpdate();
 			ps.close();
 		}
@@ -61,7 +62,7 @@ public class LeagueDAO {
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			throw new LeagueDAOException("Unable to create league.");
+			throw new LeagueDAOException("Unable to retrieve all leagues.");
 		}
 		finally {
 			try {
@@ -74,14 +75,60 @@ public class LeagueDAO {
 		}
 	}
 
-	public League retrieve(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public League retrieve(int leagueID) throws LeagueDAOException {
+		Connection conn = ConnectionFactory.getConnections();
+		League league = null;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(RETRIEVE_LEAGUE);
+			ps.setInt(1, leagueID);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				league = LeagueDAO.extractLeague(rs);
+			}
+			else {
+				throw new LeagueDAOException("League does not exist.");
+			}
+			ps.close();
+			return league;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new LeagueDAOException("Unable to retrieve league.");
+		}
+		finally {
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.err.println("Unable to close connection.");
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public void update(League obj) {
-		// TODO Auto-generated method stub
-		
+	public void update(League league) throws LeagueDAOException {
+		Connection conn = ConnectionFactory.getConnections();
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(UPDATE_LEAGUE);
+			ps.setInt(1, league.getNumber_of_teams());
+			ps.setDate(2, league.getDraft_date());
+			ps.execute();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new LeagueDAOException("Unable to update league.");
+		}
+		finally {
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.err.println("Unable to close connection.");
+				e.printStackTrace();
+			}
+		}	
 	}
 
 	public void delete(League league) throws LeagueDAOException {
@@ -110,10 +157,13 @@ public class LeagueDAO {
 	public static League extractLeague(ResultSet rs) throws SQLException {
 		League league = new League();
 		
+		league.setLeagueID(rs.getInt("League_ID"));
 		league.setNumber_of_teams(rs.getInt("Number_of_Teams"));
 		league.setDraft_date(rs.getDate("Draft_Date"));
 		
 		return league;
 	}
+	
+	
 
 }

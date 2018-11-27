@@ -59,4 +59,11 @@ public class League {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "League [leagueID=" + leagueID + ", Number_of_Teams=" + Number_of_Teams + ", Draft_Date=" + Draft_Date
+				+ "]";
+	}
+	
 }
