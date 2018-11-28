@@ -5,7 +5,7 @@ import Models.Manager;
 
 public class ManagerDAO {
 
-	public void create(Manager obj) {
+	public void create(Manager manager) {
 		// TODO Auto-generated method stub
 		
 	}
