@@ -22,14 +22,17 @@ public class LeagueDAOTest {
 	private final int TEST_NUMBER_OF_TEAMS1 = 42;
 	private final java.sql.Date TEST_DRAFT_DATE1 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME1 = "TEST NAME 1";
 	
 	private final int TEST_NUMBER_OF_TEAMS2 = 314;
 	private final java.sql.Date TEST_DRAFT_DATE2 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME2 = "TEST NAME 2";
 	
 	private final int TEST_NUMBER_OF_TEAMS3 = 217;
 	private final java.sql.Date TEST_DRAFT_DATE3 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME3 = "TEST NAME 3";
 
 	@Before
 	public void setUp() {
@@ -52,6 +55,7 @@ public class LeagueDAOTest {
 			// set params
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueName(TEST_NAME1);
 			
 			// test function
 			LeagueDAO.create(league);
@@ -72,6 +76,7 @@ public class LeagueDAOTest {
 			assertTrue(resultLeague.getDraft_date().toString()
 					.equals(TEST_DRAFT_DATE1.toString())); 
 			assertTrue(resultLeague.getNumber_of_teams() == TEST_NUMBER_OF_TEAMS1);
+			assertTrue(resultLeague.getLeagueName().equals(TEST_NAME1));
 		}
 		catch(LeagueDAOException e) {
 			e.printStackTrace();
@@ -125,12 +130,15 @@ public class LeagueDAOTest {
 			
 			league1.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league1.setDraft_date(TEST_DRAFT_DATE1);
+			league1.setLeagueName(TEST_NAME1);
 			
 			league2.setNumber_of_teams(TEST_NUMBER_OF_TEAMS2);
 			league2.setDraft_date(TEST_DRAFT_DATE2);
+			league2.setLeagueName(TEST_NAME2);
 			
 			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
 			league3.setDraft_date(TEST_DRAFT_DATE3);
+			league3.setLeagueName(TEST_NAME3);
 			
 			// insert leagues
 			LeagueDAO.create(league1);
@@ -213,7 +221,7 @@ public class LeagueDAOTest {
 			LeagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
-					+ "WHERE Number_of_Teams=? AND Draft_Date+?");
+					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
 			ps.setDate(2, TEST_DRAFT_DATE1);
 			ResultSet rs = ps.executeQuery();
@@ -270,6 +278,7 @@ public class LeagueDAOTest {
 			
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueName(TEST_NAME1);
 			
 			LeagueDAO.create(league);
 			
@@ -284,6 +293,7 @@ public class LeagueDAOTest {
 			updatedLeague.setDraft_date(league.getDraft_date());
 			updatedLeague.setLeagueID(league.getLeagueID());
 			updatedLeague.setNumber_of_teams(6000);
+			updatedLeague.setLeagueName("updated name");
 			
 			LeagueDAO.update(updatedLeague);
 			

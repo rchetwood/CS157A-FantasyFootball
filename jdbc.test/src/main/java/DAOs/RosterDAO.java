@@ -5,29 +5,19 @@ import Models.Roster;
 
 public class RosterDAO {
 
-	public void create(Roster obj) {
+	public static void addPlayer(int playerID) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void deletePlayer(int playerID) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public List<Roster> retrieveAll() {
+	public static List<Roster> retrieveManagersRoster(int managerID) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public Roster retrieve(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void update(Roster obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void delete(Roster obj) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
