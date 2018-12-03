@@ -28,6 +28,7 @@ import javafx.collections.*;
 import javafx.stage.*;
 import javafx.util.Callback;
 
+@SuppressWarnings("restriction")
 public class GUI extends Application{
 	
 	public void start(final Stage stage) {
@@ -141,7 +142,7 @@ public class GUI extends Application{
 			openLeagueButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					
+					showLeagueHome(stage, account, league);
 				}
 			});
 			
@@ -232,6 +233,8 @@ public class GUI extends Application{
 	
 	public void showLeagueHome(final Stage stage, final Account account, final League league) {
 		
+		Scene scene = new Scene(new Group());
+		
 		TableView<Manager> managerTable = new TableView<>();
 		
 		final ObservableList<Manager> managers = FXCollections.observableArrayList();
@@ -247,9 +250,39 @@ public class GUI extends Application{
 		managerTable.setEditable(false);
 		managerTable.setItems(managers);
 		managerTable.getColumns().addAll(managerName, managerPoints);
+		managerTable.getSortOrder().add(managerPoints);
+		
+		Button viewPlayersButton = new Button("View Players");
+		
+		viewPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showDraftPick(stage, account, league);
+			}
+		});
+		
+		Region bottomRowRegion = new Region();
+		HBox.setHgrow(bottomRowRegion, Priority.ALWAYS);
+		
+		HBox bottomRow = new HBox(managerTable, bottomRowRegion, viewPlayersButton);
 		
 		
-		VBox main = new VBox(leagueHomeLabel, managerTable);
+		
+		
+		
+		VBox main = new VBox(leagueHomeLabel, bottomRow);
+		main.setAlignment(Pos.TOP_CENTER);
+		main.setSpacing(50);
+		main.setPadding(new Insets(10,10,10,10));
+		main.prefWidthProperty().bind(stage.widthProperty());
+		
+		((Group) scene.getRoot()).getChildren().addAll(main);
+		stage.setHeight(500);
+		stage.setWidth(600);
+		stage.setTitle("League Home");
+		stage.setScene(scene);
+		stage.show();
+		
 		
 	}
 	
@@ -270,7 +303,7 @@ public class GUI extends Application{
 	            FXCollections.observableArrayList();
 		
 		Scene scene = new Scene(new Group());
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
 		// Create Labels
 		final Label playerLabel = new Label("Players");
