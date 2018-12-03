@@ -29,7 +29,7 @@ public class Login extends Application {
 			@Override
 			public void handle(ActionEvent arg0) {
 				//Check credentials
-				boolean login = false;
+				boolean login = true;
 				if(login){
 					
 					stage.close();
