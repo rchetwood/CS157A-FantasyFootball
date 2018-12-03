@@ -2,6 +2,7 @@ package Models;
 
 public class League {
 	private int leagueID;
+	private String leagueName;
 	private int Number_of_Teams;
 	private java.sql.Date Draft_Date;
 	
@@ -11,6 +12,14 @@ public class League {
 
 	public void setLeagueID(int leagueID) {
 		this.leagueID = leagueID;
+	}
+	
+	public String getLeagueName() {
+		return leagueName;
+	}
+	
+	public void setLeagueName(String leagueName) {
+		this.leagueName = leagueName;
 	}
 
 	public int getNumber_of_teams(){
