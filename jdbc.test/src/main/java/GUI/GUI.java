@@ -47,11 +47,11 @@ public class GUI extends Application{
 		
 		final Label title = new Label("Welcome to Fantasy Football!!");
 		
-		final Label usernameLabel = new Label("Username:  ");
-		final TextField username = new TextField("");
+		final Label emailLabel = new Label("Email:  ");
+		final TextField email = new TextField("");
 		
 		final Label passwordLabel = new Label("Password: ");
-		final TextField password = new TextField("");
+		final PasswordField password = new PasswordField();
 		
 		Button loginButton = new Button("Login");
 		
@@ -59,12 +59,13 @@ public class GUI extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				//Check credentials
-				Account account = new Account();
-				boolean login = true;
-				if(login){
+				try {
+					Account account = AccountDAO.retrieve(email.getText());
 					showProfile(stage, account);
-				} else {
-					System.out.println("login failed");
+				} catch (AccountDAOException adaoe) {
+					System.out.println(adaoe.getMessage());
+					email.setText("");
+					password.setText("");
 				}
 			}
 		});
@@ -88,7 +89,7 @@ public class GUI extends Application{
 		vbox.setPadding(new Insets(10,50,10,50));
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.prefWidthProperty().bind(scene.widthProperty());
-		vbox.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, bottomRow);
+		vbox.getChildren().addAll(title, emailLabel, email, passwordLabel, password, bottomRow);
 		
 		((Group) scene.getRoot()).getChildren().addAll(vbox);
 		

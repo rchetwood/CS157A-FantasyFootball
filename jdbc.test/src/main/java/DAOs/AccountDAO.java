@@ -88,7 +88,7 @@ public class AccountDAO {
 			}
 			else {
 				ps.close();
-				return null;
+				throw new AccountDAOException("Account does not exist");
 			}
 		}
 		catch(SQLException e) {
