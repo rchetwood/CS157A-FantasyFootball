@@ -8,22 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Exceptions.ManagerDAOException;
+import Models.League;
 import Models.Manager;
 
 public class ManagerDAO {
 
-	private final String CREATE_MANAGER = "INSERT INTO Manager (email, League_ID) "
+	private static final String CREATE_MANAGER = "INSERT INTO Manager (email, League_ID) "
 			+ "VALUES(?, ?)";
-	private final String RETRIEVE_ACCOUNTS_MANAGERS = "SELECT * "
+	private static final String RETRIEVE_ACCOUNTS_MANAGERS = "SELECT * "
 			+ "FROM Manager WHERE email=?";
-	private final String RETRIEVE_MANAGER = "SELECT * FROM Manager "
+	private static final String RETRIEVE_MANAGER = "SELECT * FROM Manager "
 			+ "WHERE Manager_ID=?";
-	private final String RETIEVE_MANAGERS_IN_LEAGUE = "SELECT * FROM Manager "
+	private static final String RETIEVE_MANAGERS_IN_LEAGUE = "SELECT * FROM Manager "
 			+ "WHERE League_ID=?";
-	private final String DELETE_MANAGER = "DELETE FROM Manager "
+	private static final String DELETE_MANAGER = "DELETE FROM Manager "
 			+ "WHERE Manager_ID=?";
+	private static final String RETRIEVE_LEAGUES_ON_ACCOUNT = "SELECT * FROM League "
+			+ "WHERE League_ID IN (SELECT League_ID FROM Manager "
+			+ "WHERE email=?)";
 
-	public void create(Manager manager) throws ManagerDAOException {
+	public static void create(Manager manager) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -47,8 +51,38 @@ public class ManagerDAO {
 			}
 		}	
 	}
+	
+	public static List<League> retrieveAllLeaguesFromAccount(String email) throws ManagerDAOException {
+		Connection conn = ConnectionFactory.getConnections();
+		List<League> allLeagueFromAccount = new ArrayList<>();
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(RETRIEVE_LEAGUES_ON_ACCOUNT);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				League league = LeagueDAO.extractLeague(rs);
+				allLeagueFromAccount.add(league);
+			}
+			ps.close();
+			return allLeagueFromAccount;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new ManagerDAOException("Unable to get all league associated with that account.");
+		}
+		finally {
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.err.println("Unable to close connection.");
+				e.printStackTrace();
+			}
+		}
+	}
 
-	public List<Manager> retrieveAnAccountsManagers(String email) throws ManagerDAOException {
+	public static List<Manager> retrieveAnAccountsManagers(String email) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		List<Manager> allManagerOnAnAccount = new ArrayList<>();
 
@@ -78,7 +112,7 @@ public class ManagerDAO {
 		}
 	}
 
-	public Manager retrieveAManager(int managerID) throws ManagerDAOException {
+	public static Manager retrieveAManager(int managerID) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		Manager manager = new Manager();
 
@@ -110,7 +144,7 @@ public class ManagerDAO {
 		}
 	}
 
-	public List<Manager> retrieveAllManagerInLeague(int leagueID) throws ManagerDAOException {
+	public static List<Manager> retrieveAllManagerInLeague(int leagueID) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		List<Manager> allManagersInGivenLeague = new ArrayList<>();
 
@@ -140,7 +174,7 @@ public class ManagerDAO {
 		}
 	}
 
-	public void delete(Manager manager) throws ManagerDAOException {
+	public static void delete(Manager manager) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		
 		try {

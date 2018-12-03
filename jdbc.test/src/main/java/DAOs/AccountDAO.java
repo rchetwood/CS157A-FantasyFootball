@@ -12,13 +12,13 @@ import Models.Account;
 
 public class AccountDAO {
 
-	private final String CREATE_ACCOUNT = "INSERT INTO Account (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
-	private final String RETRIEVE_ALL_ACCOUNTS = "SELECT * FROM Account";
-	private final String RETRIEVE_ACCOUNT = "SELECT * FROM Account WHERE email=?";
-	private final String UPDATE_ACCOUNT = "UPDATE Account SET firstName=?, lastName=?, password=? WHERE email=?";
-	private final String DELETE_ACCOUNT = "DELETE FROM Account WHERE email=?";
+	private static final String CREATE_ACCOUNT = "INSERT INTO Account (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
+	private static final String RETRIEVE_ALL_ACCOUNTS = "SELECT * FROM Account";
+	private static final String RETRIEVE_ACCOUNT = "SELECT * FROM Account WHERE email=?";
+	private static final String UPDATE_ACCOUNT = "UPDATE Account SET firstName=?, lastName=?, password=? WHERE email=?";
+	private static final String DELETE_ACCOUNT = "DELETE FROM Account WHERE email=?";
 
-	public void create(Account account) throws AccountDAOException {
+	public static void create(Account account) throws AccountDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -45,7 +45,7 @@ public class AccountDAO {
 		}
 	}
 
-	public List<Account> retrieveAll() throws AccountDAOException {
+	public static List<Account> retrieveAll() throws AccountDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		List<Account> allAccounts = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class AccountDAO {
 		}
 	}
 
-	public Account retrieve(String email) throws AccountDAOException {
+	public static Account retrieve(String email) throws AccountDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -106,7 +106,7 @@ public class AccountDAO {
 		}
 	}
 
-	public void update(Account account) throws AccountDAOException {
+	public static void update(Account account) throws AccountDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -132,7 +132,7 @@ public class AccountDAO {
 		}
 	}
 
-	public void delete(String email) throws AccountDAOException {
+	public static void delete(String email) throws AccountDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {

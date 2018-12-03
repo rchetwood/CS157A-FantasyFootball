@@ -53,26 +53,14 @@ public class ManagerDAOTest {
 	private final String DELETE_TEST_MANAGER = "DELETE FROM Manager "
 			+ "WHERE Manager_ID=?";
 
-
-	private ManagerDAO managerDAO;
-	private AccountDAO accountDAO;
-	private LeagueDAO leagueDAO;
-
 	@Before
 	public void setup() {
-		managerDAO = new ManagerDAO();
-		accountDAO = new AccountDAO();
-		leagueDAO = new LeagueDAO();
+
 	}
 
 	@After
 	public void tearDown() {
-		managerDAO = null;
-		accountDAO = null;
-		leagueDAO = null;
-		assertNull(managerDAO);
-		assertNull(accountDAO);
-		assertNull(leagueDAO);
+
 	}
 
 	@Test
@@ -92,11 +80,11 @@ public class ManagerDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 
-			accountDAO.create(account);
-			leagueDAO.create(league);
+			AccountDAO.create(account);
+			LeagueDAO.create(league);
 
 			//retrieve the db entities
-			account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+			account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
@@ -110,7 +98,7 @@ public class ManagerDAOTest {
 			manager.setEmail(account.getEmail());
 			manager.setLeague_id(league.getLeagueID());
 
-			managerDAO.create(manager);
+			ManagerDAO.create(manager);
 
 			ps = conn.prepareStatement(RETRIEVE_TEST_MANAGER);
 			ps.setString(1, account.getEmail());
@@ -126,13 +114,10 @@ public class ManagerDAOTest {
 		catch (ManagerDAOException e) {
 			e.printStackTrace();
 		} catch (AccountDAOException e) {
-
 			e.printStackTrace();
 		} catch (LeagueDAOException e) {
-
 			e.printStackTrace();
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		} 
 
@@ -140,7 +125,7 @@ public class ManagerDAOTest {
 			try {
 				//retrieve the db entities
 				League league = new League();
-				Account account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				Account account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
@@ -164,18 +149,16 @@ public class ManagerDAOTest {
 				ps.setInt(1, manager.getManagerID());
 				ps.executeUpdate();
 
-				leagueDAO.delete(league);
-				accountDAO.delete(manager.getEmail());
+				LeagueDAO.delete(league);
+				AccountDAO.delete(manager.getEmail());
 
 				ps.close();
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
 			} catch (LeagueDAOException e) {
-
 				e.printStackTrace();
 			} catch (AccountDAOException e) {
-
 				e.printStackTrace();
 			}
 			try {
@@ -188,7 +171,7 @@ public class ManagerDAOTest {
 	}
 
 	@Test
-	public void testRetrieveAnAccountsManagers() {
+	public void testRetrieveAllLeaguesFromAccount() {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -218,11 +201,11 @@ public class ManagerDAOTest {
 			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
 			league3.setDraft_date(TEST_DRAFT_DATE3);
 
-			leagueDAO.create(league1);
-			leagueDAO.create(league2);
-			leagueDAO.create(league3);
+			LeagueDAO.create(league1);
+			LeagueDAO.create(league2);
+			LeagueDAO.create(league3);
 
-			accountDAO.create(account);
+			AccountDAO.create(account);
 
 			// retrieve leagues and account to get ids so
 			// that we can create managers
@@ -260,7 +243,7 @@ public class ManagerDAOTest {
 			}
 
 			// account
-			account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+			account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 
 			// create managers
 			manager1.setEmail(account.getEmail());
@@ -273,16 +256,16 @@ public class ManagerDAOTest {
 			manager3.setLeague_id(league3.getLeagueID());
 
 			// insert into db
-			managerDAO.create(manager1);
-			managerDAO.create(manager2);
-			managerDAO.create(manager3);
+			ManagerDAO.create(manager1);
+			ManagerDAO.create(manager2);
+			ManagerDAO.create(manager3);
 
 			// get managers associated with given account
-			List<Manager> allManagersFromGivenAccount = 
-					managerDAO.retrieveAnAccountsManagers(account.getEmail());
+			List<League> allLeaguesFromGivenAccount = 
+					ManagerDAO.retrieveAllLeaguesFromAccount(account.getEmail());
 
 			// assert the values are all there
-			assertTrue(allManagersFromGivenAccount.size() == 3);
+			assertTrue(allLeaguesFromGivenAccount.size() == 3);
 		}
 		catch (LeagueDAOException e) {
 
@@ -300,7 +283,7 @@ public class ManagerDAOTest {
 		finally {
 			// delete test entities
 			try {
-				Account account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				Account account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 				League league1 = new League();
 				League league2 = new League();
 				League league3 = new League();
@@ -379,10 +362,228 @@ public class ManagerDAOTest {
 				ps.setInt(1, manager3.getManagerID());
 				ps.executeUpdate();
 
-				leagueDAO.delete(league1);
-				leagueDAO.delete(league2);
-				leagueDAO.delete(league3);
-				accountDAO.delete(manager1.getEmail());
+				LeagueDAO.delete(league1);
+				LeagueDAO.delete(league2);
+				LeagueDAO.delete(league3);
+				AccountDAO.delete(manager1.getEmail());
+
+
+				ps.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			} catch (LeagueDAOException e) {
+
+				e.printStackTrace();
+			} catch (AccountDAOException e) {
+
+				e.printStackTrace();
+			}
+			try {
+				conn.close();
+			}
+			catch(SQLException e) {
+				System.err.println("Unable to close connection.");
+			}
+		}
+	}
+
+	@Test
+	public void testRetrieveAnAccountsManagers() {
+		Connection conn = ConnectionFactory.getConnections();
+
+		try {
+
+			// create single account and multiple leagues and managers
+			Account account = new Account();
+			account.setEmail(TEST_ACCOUNT_EMAIL1);
+			account.setFirstname(TEST_FIRST_NAME1);
+			account.setLastname(TEST_LAST_NAME1);
+			account.setPassword(TEST_PASSWORD1);
+
+			Manager manager1 = new Manager();
+			Manager manager2 = new Manager();
+			Manager manager3 = new Manager();
+
+			League league1 = new League();
+			League league2 = new League();
+			League league3 = new League();
+
+			// set values of leagues and managers
+			league1.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
+			league1.setDraft_date(TEST_DRAFT_DATE1);
+
+			league2.setNumber_of_teams(TEST_NUMBER_OF_TEAMS2);
+			league2.setDraft_date(TEST_DRAFT_DATE2);
+
+			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
+			league3.setDraft_date(TEST_DRAFT_DATE3);
+
+			LeagueDAO.create(league1);
+			LeagueDAO.create(league2);
+			LeagueDAO.create(league3);
+
+			AccountDAO.create(account);
+
+			// retrieve leagues and account to get ids so
+			// that we can create managers
+			// league 1
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
+					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
+			ps.setDate(2, TEST_DRAFT_DATE1);
+
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				league1 = LeagueDAO.extractLeague(rs);
+			}
+
+			// league 2
+			ps = conn.prepareStatement("SELECT * FROM League "
+					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+			ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
+			ps.setDate(2, TEST_DRAFT_DATE2);
+
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				league2 = LeagueDAO.extractLeague(rs);
+			}
+
+			// league 3
+			ps = conn.prepareStatement("SELECT * FROM League "
+					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+			ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
+			ps.setDate(2, TEST_DRAFT_DATE3);
+
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				league3 = LeagueDAO.extractLeague(rs);
+			}
+
+			// account
+			account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+
+			// create managers
+			manager1.setEmail(account.getEmail());
+			manager1.setLeague_id(league1.getLeagueID());
+
+			manager2.setEmail(account.getEmail());
+			manager2.setLeague_id(league2.getLeagueID());
+
+			manager3.setEmail(account.getEmail());
+			manager3.setLeague_id(league3.getLeagueID());
+
+			// insert into db
+			ManagerDAO.create(manager1);
+			ManagerDAO.create(manager2);
+			ManagerDAO.create(manager3);
+
+			// get managers associated with given account
+			List<Manager> allManagersFromGivenAccount = 
+					ManagerDAO.retrieveAnAccountsManagers(account.getEmail());
+
+			// assert the values are all there
+			assertTrue(allManagersFromGivenAccount.size() == 3);
+		}
+		catch (LeagueDAOException e) {
+
+			e.printStackTrace();
+		} catch (AccountDAOException e) {
+
+			e.printStackTrace();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} catch (ManagerDAOException e) {
+
+			e.printStackTrace();
+		}
+		finally {
+			// delete test entities
+			try {
+				Account account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				League league1 = new League();
+				League league2 = new League();
+				League league3 = new League();
+				Manager manager1 = new Manager();
+				Manager manager2 = new Manager();
+				Manager manager3 = new Manager();
+
+				// league 1
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
+						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
+				ps.setDate(2, TEST_DRAFT_DATE1);
+
+				ResultSet rs = ps.executeQuery();
+				if(rs.next()) {
+					league1 = LeagueDAO.extractLeague(rs);
+				}
+
+				// league 2
+				ps = conn.prepareStatement("SELECT * FROM League "
+						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+				ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
+				ps.setDate(2, TEST_DRAFT_DATE2);
+
+				rs = ps.executeQuery();
+				if(rs.next()) {
+					league2 = LeagueDAO.extractLeague(rs);
+				}
+
+				// league 3
+				ps = conn.prepareStatement("SELECT * FROM League "
+						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
+				ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
+				ps.setDate(2, TEST_DRAFT_DATE3);
+
+				rs = ps.executeQuery();
+				if(rs.next()) {
+					league3 = LeagueDAO.extractLeague(rs);
+				}
+
+				// retrieve managers
+				// manager 1
+				ps = conn.prepareStatement(RETRIEVE_TEST_MANAGER);
+				ps.setString(1, account.getEmail());
+				ps.setInt(2, league1.getLeagueID());
+				rs = ps.executeQuery();
+				if(rs.next())
+					manager1 = ManagerDAO.extractManager(rs);
+
+				// manager 2
+				ps = conn.prepareStatement(RETRIEVE_TEST_MANAGER);
+				ps.setString(1, account.getEmail());
+				ps.setInt(2, league2.getLeagueID());
+				rs = ps.executeQuery();
+				if(rs.next())
+					manager2 = ManagerDAO.extractManager(rs);
+
+				// manager 3
+				ps = conn.prepareStatement(RETRIEVE_TEST_MANAGER);
+				ps.setString(1, account.getEmail());
+				ps.setInt(2, league3.getLeagueID());
+				rs = ps.executeQuery();
+				if(rs.next())
+					manager3 = ManagerDAO.extractManager(rs);
+
+				// delete entities
+				ps = conn.prepareStatement(DELETE_TEST_MANAGER);
+				ps.setInt(1, manager1.getManagerID());
+				ps.executeUpdate();
+
+				ps = conn.prepareStatement(DELETE_TEST_MANAGER);
+				ps.setInt(1, manager2.getManagerID());
+				ps.executeUpdate();
+
+				ps = conn.prepareStatement(DELETE_TEST_MANAGER);
+				ps.setInt(1, manager3.getManagerID());
+				ps.executeUpdate();
+
+				LeagueDAO.delete(league1);
+				LeagueDAO.delete(league2);
+				LeagueDAO.delete(league3);
+				AccountDAO.delete(manager1.getEmail());
 
 
 				ps.close();
@@ -416,12 +617,12 @@ public class ManagerDAOTest {
 			account.setFirstname(TEST_FIRST_NAME1);
 			account.setLastname(TEST_LAST_NAME1);
 			account.setPassword(TEST_PASSWORD1);
-			accountDAO.create(account);
+			AccountDAO.create(account);
 
 			League league = new League();
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 
 			// retrieve league for key
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -438,7 +639,7 @@ public class ManagerDAOTest {
 			Manager manager = new Manager();
 			manager.setEmail(account.getEmail());
 			manager.setLeague_id(league.getLeagueID());
-			managerDAO.create(manager);
+			ManagerDAO.create(manager);
 
 			// retrieve manager to get key for verifying
 			ps = conn.prepareStatement("SELECT * FROM Manager "
@@ -450,7 +651,7 @@ public class ManagerDAOTest {
 				manager = ManagerDAO.extractManager(rs);
 
 			// test retrieve manager function
-			Manager resultManager = managerDAO.retrieveAManager(manager.getManagerID());
+			Manager resultManager = ManagerDAO.retrieveAManager(manager.getManagerID());
 
 			assertTrue(resultManager.equals(manager));
 		}
@@ -473,7 +674,7 @@ public class ManagerDAOTest {
 				Manager manager = null;
 
 				// retrieve account
-				account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 
 				// retrieve league 
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -502,8 +703,8 @@ public class ManagerDAOTest {
 				ps.setInt(2, league.getLeagueID());
 				ps.executeUpdate();
 
-				leagueDAO.delete(league);
-				accountDAO.delete(account.getEmail());
+				LeagueDAO.delete(league);
+				AccountDAO.delete(account.getEmail());
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
@@ -560,11 +761,11 @@ public class ManagerDAOTest {
 			account3.setPassword(TEST_PASSWORD3);
 
 			// create league and accounts in db
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 
-			accountDAO.create(account1);
-			accountDAO.create(account2);
-			accountDAO.create(account3);
+			AccountDAO.create(account1);
+			AccountDAO.create(account2);
+			AccountDAO.create(account3);
 
 			// get league from db for key
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -578,9 +779,9 @@ public class ManagerDAOTest {
 			}
 
 			// get accounts
-			account1 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
-			account2 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL2);
-			account3 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL3);
+			account1 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+			account2 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL2);
+			account3 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL3);
 
 			// add values to managers
 			manager1.setEmail(account1.getEmail());
@@ -593,13 +794,13 @@ public class ManagerDAOTest {
 			manager3.setLeague_id(league.getLeagueID());
 
 			// add managers to db
-			managerDAO.create(manager1);
-			managerDAO.create(manager2);
-			managerDAO.create(manager3);
+			ManagerDAO.create(manager1);
+			ManagerDAO.create(manager2);
+			ManagerDAO.create(manager3);
 
 			// test get all manager from given league function
 			List<Manager> allManagersInGivenLeague = 
-					managerDAO.retrieveAllManagerInLeague(league.getLeagueID());
+					ManagerDAO.retrieveAllManagerInLeague(league.getLeagueID());
 
 			assertTrue(allManagersInGivenLeague.size() == 3);
 
@@ -619,9 +820,9 @@ public class ManagerDAOTest {
 		finally {
 			try {
 				// get accounts 
-				Account account1 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
-				Account account2 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL2);
-				Account account3 = accountDAO.retrieve(TEST_ACCOUNT_EMAIL3);
+				Account account1 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				Account account2 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL2);
+				Account account3 = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL3);
 
 				// get league 
 				League league = null;
@@ -692,10 +893,10 @@ public class ManagerDAOTest {
 				ps.executeUpdate();
 
 				// delete league and accounts
-				leagueDAO.delete(league);
-				accountDAO.delete(account1.getEmail());
-				accountDAO.delete(account2.getEmail());
-				accountDAO.delete(account3.getEmail());
+				LeagueDAO.delete(league);
+				AccountDAO.delete(account1.getEmail());
+				AccountDAO.delete(account2.getEmail());
+				AccountDAO.delete(account3.getEmail());
 
 				//done
 				ps.close();
@@ -729,12 +930,12 @@ public class ManagerDAOTest {
 			account.setFirstname(TEST_FIRST_NAME1);
 			account.setLastname(TEST_LAST_NAME1);
 			account.setPassword(TEST_PASSWORD1);
-			accountDAO.create(account);
+			AccountDAO.create(account);
 
 			League league = new League();
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 
 			// retrieve league for key
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -751,7 +952,7 @@ public class ManagerDAOTest {
 			Manager manager = new Manager();
 			manager.setEmail(account.getEmail());
 			manager.setLeague_id(league.getLeagueID());
-			managerDAO.create(manager);
+			ManagerDAO.create(manager);
 
 			// retrieve manager to get key for verifying
 			ps = conn.prepareStatement("SELECT * FROM Manager "
@@ -763,11 +964,11 @@ public class ManagerDAOTest {
 				manager = ManagerDAO.extractManager(rs);
 
 			// test delete
-			managerDAO.delete(manager);
+			ManagerDAO.delete(manager);
 
 			// should be null
 			try {
-				Manager resultManager = managerDAO.retrieveAManager(manager.getManagerID());
+				Manager resultManager = ManagerDAO.retrieveAManager(manager.getManagerID());
 			} catch(ManagerDAOException e) {
 				if(!e.getMessage().equals("Manager does not exist.")) {
 					fail();
@@ -789,7 +990,7 @@ public class ManagerDAOTest {
 				League league = null;
 
 				// retrieve account
-				account = accountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
+				account = AccountDAO.retrieve(TEST_ACCOUNT_EMAIL1);
 
 				// retrieve league 
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -801,9 +1002,9 @@ public class ManagerDAOTest {
 				if(rs.next()) {
 					league = LeagueDAO.extractLeague(rs);
 				}
-				
-				leagueDAO.delete(league);
-				accountDAO.delete(account.getEmail());
+
+				LeagueDAO.delete(league);
+				AccountDAO.delete(account.getEmail());
 			}
 			catch(SQLException e) {
 				e.printStackTrace();

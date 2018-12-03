@@ -30,18 +30,15 @@ public class LeagueDAOTest {
 	private final int TEST_NUMBER_OF_TEAMS3 = 217;
 	private final java.sql.Date TEST_DRAFT_DATE3 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
-	
-	private LeagueDAO leagueDAO;
 
 	@Before
 	public void setUp() {
-		leagueDAO = new LeagueDAO();
+
 	}
 
 	@After
 	public void tearDown() {
-		leagueDAO = null;
-		assertNull(leagueDAO);
+
 	}
 
 	@Test
@@ -57,7 +54,7 @@ public class LeagueDAOTest {
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			
 			// test function
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 			
 			// prepare sql statement to get newly inserted league
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
@@ -119,7 +116,7 @@ public class LeagueDAOTest {
 		Connection conn = ConnectionFactory.getConnections();
 		
 		try {
-			ArrayList<League> allLeague1 = (ArrayList<League>) leagueDAO.retrieveAll();
+			ArrayList<League> allLeague1 = (ArrayList<League>) LeagueDAO.retrieveAll();
 			
 			// create leagues to be retrieved
 			League league1 = new League();
@@ -136,12 +133,12 @@ public class LeagueDAOTest {
 			league3.setDraft_date(TEST_DRAFT_DATE3);
 			
 			// insert leagues
-			leagueDAO.create(league1);
-			leagueDAO.create(league2);
-			leagueDAO.create(league3);
+			LeagueDAO.create(league1);
+			LeagueDAO.create(league2);
+			LeagueDAO.create(league3);
 			
 			// get all leagues
-			ArrayList<League> allLeague2 = (ArrayList<League>) leagueDAO.retrieveAll();
+			ArrayList<League> allLeague2 = (ArrayList<League>) LeagueDAO.retrieveAll();
 			
 			assertTrue(allLeague2.size() - allLeague1.size() == 3);
 		}
@@ -181,9 +178,9 @@ public class LeagueDAOTest {
 				if(rs3.next())
 					league3 = LeagueDAO.extractLeague(rs3);
 				
-				leagueDAO.delete(league1);
-				leagueDAO.delete(league2);
-				leagueDAO.delete(league3);
+				LeagueDAO.delete(league1);
+				LeagueDAO.delete(league2);
+				LeagueDAO.delete(league3);
 			} 
 			catch (LeagueDAOException e) {
 				System.err.println("Unable to delete test entry.");
@@ -213,7 +210,7 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date+?");
@@ -244,7 +241,7 @@ public class LeagueDAOTest {
 				if(rs1.next())
 					league1 = LeagueDAO.extractLeague(rs1);
 				
-				leagueDAO.delete(league1);
+				LeagueDAO.delete(league1);
 			} 
 			catch (LeagueDAOException e) {
 				System.err.println("Unable to delete test entry.");
@@ -274,7 +271,7 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
@@ -288,9 +285,9 @@ public class LeagueDAOTest {
 			updatedLeague.setLeagueID(league.getLeagueID());
 			updatedLeague.setNumber_of_teams(6000);
 			
-			leagueDAO.update(updatedLeague);
+			LeagueDAO.update(updatedLeague);
 			
-			league = leagueDAO.retrieve(updatedLeague.getLeagueID());
+			league = LeagueDAO.retrieve(updatedLeague.getLeagueID());
 			
 			assertTrue(league.getNumber_of_teams() == 6000);
 		}
@@ -311,7 +308,7 @@ public class LeagueDAOTest {
 				ResultSet rs = ps.executeQuery();
 				if(rs.next())
 					league = LeagueDAO.extractLeague(rs);
-				leagueDAO.delete(league);
+				LeagueDAO.delete(league);
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -343,7 +340,7 @@ public class LeagueDAOTest {
 			league.setDraft_date(TEST_DRAFT_DATE1);
 
 			// create the league in sb
-			leagueDAO.create(league);
+			LeagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
@@ -359,9 +356,9 @@ public class LeagueDAOTest {
 			}
 			
 			
-			ArrayList<League> allLeague1 = (ArrayList<League>) leagueDAO.retrieveAll();
-			leagueDAO.delete(resultLeague);
-			ArrayList<League> allLeague2 = (ArrayList<League>) leagueDAO.retrieveAll();
+			ArrayList<League> allLeague1 = (ArrayList<League>) LeagueDAO.retrieveAll();
+			LeagueDAO.delete(resultLeague);
+			ArrayList<League> allLeague2 = (ArrayList<League>) LeagueDAO.retrieveAll();
 			
 
 			assertTrue(allLeague1.size() - allLeague2.size() == 1);

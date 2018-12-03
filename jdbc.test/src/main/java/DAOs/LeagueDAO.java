@@ -14,15 +14,15 @@ import Exceptions.LeagueDAOException;
 import Models.League;
 
 public class LeagueDAO {
-	private final String CREATE_LEAGUE = "INSERT INTO League (Number_of_Teams, Draft_Date) "
+	private static final String CREATE_LEAGUE = "INSERT INTO League (Number_of_Teams, Draft_Date) "
 			+ "VALUES (?, ?)";
-	private final String RETRIEVE_ALL_LEAGUES = "SELECT * FROM League";
-	private final String RETRIEVE_LEAGUE = "SELECT * FROM League WHERE League_ID=?";
-	private final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=? "
+	private static final String RETRIEVE_ALL_LEAGUES = "SELECT * FROM League";
+	private static final String RETRIEVE_LEAGUE = "SELECT * FROM League WHERE League_ID=?";
+	private static final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=? "
 			+ "WHERE League_ID=?";
-	private final String DELETE_LEAGUE = "DELETE FROM League WHERE League_ID=?";
+	private static final String DELETE_LEAGUE = "DELETE FROM League WHERE League_ID=?";
 	
-	public void create(League league) throws  LeagueDAOException {
+	public static void create(League league) throws  LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		try {
 			PreparedStatement ps = conn.prepareStatement(CREATE_LEAGUE);
@@ -46,7 +46,7 @@ public class LeagueDAO {
 		}
 	}
 
-	public List<League> retrieveAll() throws LeagueDAOException {
+	public static List<League> retrieveAll() throws LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		List<League> allLeagues = new ArrayList<>();
 		
@@ -75,7 +75,7 @@ public class LeagueDAO {
 		}
 	}
 
-	public League retrieve(int leagueID) throws LeagueDAOException {
+	public static League retrieve(int leagueID) throws LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		League league = null;
 		
@@ -107,7 +107,7 @@ public class LeagueDAO {
 		}
 	}
 
-	public void update(League league) throws LeagueDAOException {
+	public static void update(League league) throws LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {
@@ -133,7 +133,7 @@ public class LeagueDAO {
 		}	
 	}
 
-	public void delete(League league) throws LeagueDAOException {
+	public static void delete(League league) throws LeagueDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 
 		try {

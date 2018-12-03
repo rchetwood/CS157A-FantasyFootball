@@ -32,17 +32,14 @@ public class AccountDAOTest {
 	private final String TEST_EMAIL3 = "luz.p.hernandez@gmail.com";
 	private final String TEST_PASSWORD3 = "9101";
 
-	private AccountDAO accountDAO;
-
 	@Before
 	public void setUp() {
-		accountDAO = new AccountDAO();
+		
 	}
 
 	@After
 	public void tearDown() {
-		accountDAO = null;
-		assertNull(accountDAO);
+
 	}
 
 	@Test
@@ -56,7 +53,7 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			accountDAO.create(acc);
+			AccountDAO.create(acc);
 			PreparedStatement ps = conn.prepareStatement("SELECT firstName, lastName, email, password "
 					+ "FROM Account "
 					+ "WHERE email=?");
@@ -120,11 +117,11 @@ public class AccountDAOTest {
 			acc3.setEmail(TEST_EMAIL3);
 			acc3.setPassword(TEST_PASSWORD3);
 
-			accountDAO.create(acc1);
-			accountDAO.create(acc2);
-			accountDAO.create(acc3);
+			AccountDAO.create(acc1);
+			AccountDAO.create(acc2);
+			AccountDAO.create(acc3);
 
-			ArrayList<Account> allAccounts = (ArrayList<Account>) accountDAO.retrieveAll();
+			ArrayList<Account> allAccounts = (ArrayList<Account>) AccountDAO.retrieveAll();
 
 			assertTrue(allAccounts.contains(acc1));
 			assertTrue(allAccounts.contains(acc2));
@@ -189,8 +186,8 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			accountDAO.create(acc);
-			resultAcc = accountDAO.retrieve(TEST_EMAIL1);
+			AccountDAO.create(acc);
+			resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
 
 			assertTrue(resultAcc.equals(acc));
 		}
@@ -232,7 +229,7 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			resultAcc = accountDAO.retrieve(TEST_EMAIL1);
+			resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
 
 			assertTrue(resultAcc == null);
 		}
@@ -274,15 +271,15 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			accountDAO.create(acc);
+			AccountDAO.create(acc);
 			
 			acc.setFirstname("test first name");
 			acc.setLastname("test last name");
 			acc.setPassword("test password");
 			
-			accountDAO.update(acc);
+			AccountDAO.update(acc);
 			
-			resultAcc = accountDAO.retrieve(acc.getEmail());
+			resultAcc = AccountDAO.retrieve(acc.getEmail());
 			
 			assertTrue(resultAcc.getFirstname().equals("test first name"));
 			assertTrue(resultAcc.getLastname().equals("test last name"));
@@ -326,9 +323,9 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 			
-			accountDAO.delete(acc.getEmail());
+			AccountDAO.delete(acc.getEmail());
 			
-			resultAcc = accountDAO.retrieve(acc.getEmail());
+			resultAcc = AccountDAO.retrieve(acc.getEmail());
 			
 			assertTrue(resultAcc == null);
 		}
@@ -370,11 +367,11 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			accountDAO.create(acc);
+			AccountDAO.create(acc);
 			
-			accountDAO.delete(acc.getEmail());
+			AccountDAO.delete(acc.getEmail());
 			
-			resultAcc = accountDAO.retrieve(acc.getEmail());
+			resultAcc = AccountDAO.retrieve(acc.getEmail());
 			
 			assertTrue(resultAcc == null);
 		}
