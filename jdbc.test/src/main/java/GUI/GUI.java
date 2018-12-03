@@ -2,12 +2,13 @@ package GUI;
 
 import java.time.LocalDate;
 
-import com.mysql.cj.result.LocalDateTimeValueFactory;
 
 import Models.Account;
 import Models.League;
 import Models.Manager;
 import Models.Player;
+import DAOs.*;
+import Exceptions.*;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -67,11 +69,26 @@ public class GUI extends Application{
 			}
 		});
 		
+		Button signUpButton = new Button("Sign Up");
+
+		signUpButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showSignUp(stage);
+			}
+		});
+		
+		HBox bottomRow = new HBox(loginButton, signUpButton);
+		bottomRow.setSpacing(10);
+		bottomRow.setAlignment(Pos.CENTER);
+		
+		
 		VBox vbox = new VBox();
 		vbox.setSpacing(10);
-		vbox.setPadding(new Insets(10, 0, 0, 65));
-		vbox.setAlignment(Pos.CENTER);
-		vbox.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, loginButton);
+		vbox.setPadding(new Insets(10,50,10,50));
+		vbox.setAlignment(Pos.TOP_CENTER);
+		vbox.prefWidthProperty().bind(scene.widthProperty());
+		vbox.getChildren().addAll(title, usernameLabel, username, passwordLabel, password, bottomRow);
 		
 		((Group) scene.getRoot()).getChildren().addAll(vbox);
 		
@@ -81,6 +98,85 @@ public class GUI extends Application{
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
+	}
+	
+	private void showSignUp(final Stage stage) {
+		Scene scene = new Scene(new Group());
+		
+		Label firstNameLabel = new Label("First Name: ");
+		
+		final TextField firstName = new TextField("");
+		
+		Label lastNameLabel = new Label("Last Name: ");
+		
+		final TextField lastName = new TextField("");
+		
+		Label emailLabel = new Label("Email: ");
+		
+		final TextField email = new TextField("");
+		
+		Label passwordLabel = new Label("Password: ");
+		
+		final PasswordField password = new PasswordField();
+		
+		Label repeatPasswordLabel = new Label("Repeat Password: ");
+		
+		final PasswordField repeatPassword = new PasswordField();
+		
+		Button createAccountButton = new Button("Create Account");
+		
+		createAccountButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if(password.getText().equals(repeatPassword.getText())) {
+					Account account = new Account();
+					account.setFirstname(firstName.getText());
+					account.setLastname(lastName.getText());
+					account.setEmail(email.getText());
+					account.setPassword(password.getText());
+					try {
+						AccountDAO.create(account);
+						showProfile(stage, account);
+					} catch (AccountDAOException adaoe) {
+						System.out.println(adaoe.getMessage());
+					}
+				} else {
+					password.setText("");
+					repeatPassword.setText("");
+				}
+			}
+		});
+		
+		Button cancelButton = new Button("Cancel");
+		
+		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showLogin(stage);
+			}
+		});
+		
+		
+		HBox bottomRow = new HBox(createAccountButton, cancelButton);
+		bottomRow.setSpacing(10);
+		bottomRow.setAlignment(Pos.CENTER);
+		
+		
+		
+		VBox main = new VBox(firstNameLabel, firstName, lastNameLabel, lastName, emailLabel, email, passwordLabel, password, repeatPasswordLabel, repeatPassword, bottomRow);
+		main.setSpacing(10);
+		main.setAlignment(Pos.TOP_CENTER);
+		main.prefWidthProperty().bind(scene.widthProperty());
+		main.setPadding(new Insets(10,50,10,50));
+		
+		((Group) scene.getRoot()).getChildren().add(main);
+		
+		stage.setTitle("Create Account");
+		stage.setScene(scene);
+		stage.setHeight(400);
+		stage.show();
+		
+				
 	}
 	
 	private void showProfile(final Stage stage, final Account account) {
