@@ -1,5 +1,9 @@
 package GUI;
 
+import java.time.LocalDate;
+
+import com.mysql.cj.result.LocalDateTimeValueFactory;
+
 import Models.Account;
 import Models.League;
 import Models.Manager;
@@ -21,6 +25,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -28,6 +33,7 @@ import javafx.collections.*;
 import javafx.stage.*;
 import javafx.util.Callback;
 
+@SuppressWarnings("restriction")
 public class GUI extends Application{
 	
 	public void start(final Stage stage) {
@@ -141,7 +147,7 @@ public class GUI extends Application{
 			openLeagueButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					
+					showLeagueHome(stage, account, league);
 				}
 			});
 			
@@ -185,8 +191,27 @@ public class GUI extends Application{
 	private void showCreateLeague(final Stage stage, final Account account) {
 		Scene scene = new Scene(new Group());
 		
+		final Label leagueNameLabel = new Label("League Name: ");
+		
+		final TextField leagueName = new TextField("");
+		
 		final Label numTeamsLabel = new Label("Number of Teams: ");
+		
 		final TextField numTeams = new TextField("");
+		
+		final League league = new League();
+		
+		final DatePicker dp = new DatePicker();
+		
+		 dp.setOnAction(new EventHandler<ActionEvent>() {
+			 @Override
+			 public void handle(ActionEvent arg0) {
+				 LocalDate draftDate = dp.getValue();
+				 league.setDraft_date(new java.sql.Date(draftDate.toEpochDay() * 24 * 60 * 60 * 1000 + (24*60*60*1000)));
+			 }
+		});
+		
+		Label draftDateLabel = new Label("Select Draft Date");
 		
 		Button createBtn = new Button("Create League");
 		
@@ -196,7 +221,7 @@ public class GUI extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				String num = numTeams.getText();
-				if (!num.isEmpty()) {
+				if (!num.isEmpty() && league.getDraft_date() != null && leagueName.getText() != null) {
 					// SQL statement here
 					// Add League to DB
 					System.out.println(numTeams.getText());
@@ -217,20 +242,23 @@ public class GUI extends Application{
 		
 		VBox createBox = new VBox();
 		createBox.setSpacing(10);
-		createBox.setPadding(new Insets(10, 0, 0, 65));
-		createBox.setAlignment(Pos.CENTER);
-		createBox.getChildren().addAll(numTeamsLabel, numTeams, createBtn, cancelButton);
+		createBox.setPadding(new Insets(10, 10, 10, 10));
+		createBox.setAlignment(Pos.TOP_CENTER);
+		createBox.prefWidthProperty().bind(scene.widthProperty());
+		createBox.getChildren().addAll(leagueNameLabel, leagueName, numTeamsLabel, numTeams, draftDateLabel, dp, createBtn, cancelButton);
 		
 		((Group) scene.getRoot()).getChildren().addAll(createBox);
 		
 		stage.setWidth(300);
-		stage.setHeight(200);
+		stage.setHeight(300);
 		stage.setTitle("Create League");
 		stage.setScene(scene);
 		stage.show();
 	}
 	
 	public void showLeagueHome(final Stage stage, final Account account, final League league) {
+		
+		Scene scene = new Scene(new Group());
 		
 		TableView<Manager> managerTable = new TableView<>();
 		
@@ -247,9 +275,39 @@ public class GUI extends Application{
 		managerTable.setEditable(false);
 		managerTable.setItems(managers);
 		managerTable.getColumns().addAll(managerName, managerPoints);
+		managerTable.getSortOrder().add(managerPoints);
+		
+		Button viewPlayersButton = new Button("View Players");
+		
+		viewPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showDraftPick(stage, account, league);
+			}
+		});
+		
+		Region bottomRowRegion = new Region();
+		HBox.setHgrow(bottomRowRegion, Priority.ALWAYS);
+		
+		HBox bottomRow = new HBox(managerTable, bottomRowRegion, viewPlayersButton);
 		
 		
-		VBox main = new VBox(leagueHomeLabel, managerTable);
+		
+		
+		
+		VBox main = new VBox(leagueHomeLabel, bottomRow);
+		main.setAlignment(Pos.TOP_CENTER);
+		main.setSpacing(50);
+		main.setPadding(new Insets(10,10,10,10));
+		main.prefWidthProperty().bind(stage.widthProperty());
+		
+		((Group) scene.getRoot()).getChildren().addAll(main);
+		stage.setHeight(500);
+		stage.setWidth(600);
+		stage.setTitle("League Home");
+		stage.setScene(scene);
+		stage.show();
+		
 		
 	}
 	
@@ -270,7 +328,7 @@ public class GUI extends Application{
 	            FXCollections.observableArrayList();
 		
 		Scene scene = new Scene(new Group());
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		
 		// Create Labels
 		final Label playerLabel = new Label("Players");
