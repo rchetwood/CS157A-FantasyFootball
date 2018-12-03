@@ -1,5 +1,9 @@
 package GUI;
 
+import java.time.LocalDate;
+
+import com.mysql.cj.result.LocalDateTimeValueFactory;
+
 import Models.Account;
 import Models.League;
 import Models.Manager;
@@ -21,6 +25,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -186,8 +191,27 @@ public class GUI extends Application{
 	private void showCreateLeague(final Stage stage, final Account account) {
 		Scene scene = new Scene(new Group());
 		
+		final Label leagueNameLabel = new Label("League Name: ");
+		
+		final TextField leagueName = new TextField("");
+		
 		final Label numTeamsLabel = new Label("Number of Teams: ");
+		
 		final TextField numTeams = new TextField("");
+		
+		final League league = new League();
+		
+		final DatePicker dp = new DatePicker();
+		
+		 dp.setOnAction(new EventHandler<ActionEvent>() {
+			 @Override
+			 public void handle(ActionEvent arg0) {
+				 LocalDate draftDate = dp.getValue();
+				 league.setDraft_date(new java.sql.Date(draftDate.toEpochDay() * 24 * 60 * 60 * 1000 + (24*60*60*1000)));
+			 }
+		});
+		
+		Label draftDateLabel = new Label("Select Draft Date");
 		
 		Button createBtn = new Button("Create League");
 		
@@ -197,7 +221,7 @@ public class GUI extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				String num = numTeams.getText();
-				if (!num.isEmpty()) {
+				if (!num.isEmpty() && league.getDraft_date() != null && leagueName.getText() != null) {
 					// SQL statement here
 					// Add League to DB
 					System.out.println(numTeams.getText());
@@ -218,14 +242,15 @@ public class GUI extends Application{
 		
 		VBox createBox = new VBox();
 		createBox.setSpacing(10);
-		createBox.setPadding(new Insets(10, 0, 0, 65));
-		createBox.setAlignment(Pos.CENTER);
-		createBox.getChildren().addAll(numTeamsLabel, numTeams, createBtn, cancelButton);
+		createBox.setPadding(new Insets(10, 10, 10, 10));
+		createBox.setAlignment(Pos.TOP_CENTER);
+		createBox.prefWidthProperty().bind(scene.widthProperty());
+		createBox.getChildren().addAll(leagueNameLabel, leagueName, numTeamsLabel, numTeams, draftDateLabel, dp, createBtn, cancelButton);
 		
 		((Group) scene.getRoot()).getChildren().addAll(createBox);
 		
 		stage.setWidth(300);
-		stage.setHeight(200);
+		stage.setHeight(300);
 		stage.setTitle("Create League");
 		stage.setScene(scene);
 		stage.show();
