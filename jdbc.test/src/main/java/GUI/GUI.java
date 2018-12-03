@@ -444,8 +444,7 @@ public class GUI extends Application{
 		selectedStatsLabel.setFont(new Font("Arial", 14));
 
 		// Name Columns
-		TableColumn<Manager, String> managerFirstName = new TableColumn<>("First Name");
-		TableColumn<Manager, String> managerLastName = new TableColumn<>("Last Name");
+		TableColumn<Manager, String> managerEmail = new TableColumn<>("Email");
 		
 		TableColumn<Player, String> playerFirstName = new TableColumn<>("First Name");
 		TableColumn<Player, String> playerLastName = new TableColumn<>("Last Name");
@@ -458,8 +457,7 @@ public class GUI extends Application{
 		TableColumn<Player, String> rosterPosition = new TableColumn<>("Position");
 		
 		// Connect Columns to model attributes
-		managerFirstName.setCellValueFactory(new PropertyValueFactory<Manager, String>("firstName"));
-		managerLastName.setCellValueFactory(new PropertyValueFactory<Manager, String>("lastName"));
+		managerEmail.setCellValueFactory(new PropertyValueFactory<Manager, String>("email"));
 		
 		playerFirstName.setCellValueFactory(new PropertyValueFactory<Player, String>("firstName"));
 		playerLastName.setCellValueFactory(new PropertyValueFactory<Player, String>("lastName"));
@@ -478,7 +476,7 @@ public class GUI extends Application{
 		
 		managerTable.setEditable(false);
 		managerTable.setItems(managers);
-		managerTable.getColumns().addAll(managerFirstName, managerLastName);
+		managerTable.getColumns().addAll(managerEmail);
 		
 		rosterTable.setEditable(false);
 		rosterTable.setItems(roster);
@@ -589,7 +587,7 @@ public class GUI extends Application{
         
         final VBox statsBox = new VBox();
         statsBox.setSpacing(5);
-        statsBox.setMaxWidth(400);
+        statsBox.setMaxWidth(950);
         statsBox.setMinHeight(70);
         statsBox.setPadding(new Insets(10, 0, 0, 10));
         statsBox.setBorder(new Border(new BorderStroke(Color.BLACK, 
