@@ -2,9 +2,46 @@ package Models;
 
 public class Manager {
 	private int managerID;
-	private int Account_ID;
+	private String email;
 	private int League_ID;
 	
+	
+	@Override
+	public String toString() {
+		return "Manager [managerID=" + managerID + ", email=" + email + ", League_ID=" + League_ID + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + League_ID;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + managerID;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Manager other = (Manager) obj;
+		if (League_ID != other.League_ID)
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (managerID != other.managerID)
+			return false;
+		return true;
+	}
+
 	public int getManagerID() {
 		return managerID;
 	}
@@ -13,12 +50,12 @@ public class Manager {
 		this.managerID = managerID;
 	}
 
-	public int getAccount_id(){
-		return Account_ID;
+	public String getEmail(){
+		return email;
 	}
 
-	public void setAccount_id(int Account_ID){
-		this.Account_ID=Account_ID;
+	public void setEmail(String email){
+		this.email=email;
 	}
 
 	public int getLeague_id(){

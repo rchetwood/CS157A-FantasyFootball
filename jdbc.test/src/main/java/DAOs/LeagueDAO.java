@@ -116,6 +116,7 @@ public class LeagueDAO {
 			ps.setDate(2, league.getDraft_date());
 			ps.setInt(3, league.getLeagueID());
 			ps.execute();
+			ps.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -139,6 +140,7 @@ public class LeagueDAO {
 			PreparedStatement ps = conn.prepareStatement(DELETE_LEAGUE);
 			ps.setInt(1, league.getLeagueID());
 			ps.execute();
+			ps.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
