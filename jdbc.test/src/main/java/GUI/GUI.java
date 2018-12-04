@@ -510,8 +510,6 @@ public class GUI extends Application{
 			System.out.println(mdaoe.getMessage());
 		}
 		
-		System.out.println(currentManager);
-		
 		final Manager currentManagerFinal = currentManager;
 		
 		try {
@@ -520,6 +518,7 @@ public class GUI extends Application{
 			System.out.println(mdaoe.getMessage());
 		}
 		
+		/*
 		for(Manager m : managers) {
 			int totalPoints = 0;
 			try {
@@ -537,7 +536,7 @@ public class GUI extends Application{
 				System.out.println(rdaoe.getMessage());
 			}
 			m.setPoints(totalPoints);
-		}
+		}*/
 		
 		final Label leagueHomeLabel = new Label("League Home");
 		
@@ -556,6 +555,10 @@ public class GUI extends Application{
 		HBox topRow = new HBox(leagueHomeLabel, topCenterRegion, backButton);
 		topRow.setSpacing(30);
 		topRow.setPadding(new Insets(10,10,0,10));
+		
+		Label loadingLabel = new Label("Points Loading...");
+		loadingLabel.setTextFill(Color.RED);
+		loadingLabel.setOpacity(0);
 		
 		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Email");
 		TableColumn<Manager, Integer> managerPoints = new TableColumn<>("Points");
@@ -577,6 +580,11 @@ public class GUI extends Application{
 		managerTable.getSortOrder().add(managerPoints);
 		managerTable.prefWidthProperty().bind(scene.widthProperty());
 		
+		
+		PointCalculator pc = new PointCalculator(managers, managerTable, loadingLabel);
+		new Thread(pc).start();
+		System.out.println("Hello");
+		
 		Button viewPlayersButton = new Button("View Players");
 		
 		viewPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -588,14 +596,14 @@ public class GUI extends Application{
 		
 		
 		
-		VBox main = new VBox(topRow, managerTable, viewPlayersButton);
+		VBox main = new VBox(topRow, loadingLabel, managerTable, viewPlayersButton);
 		main.setAlignment(Pos.TOP_CENTER);
-		main.setSpacing(20);
+		main.setSpacing(10);
 		main.setPadding(new Insets(10,10,10,10));
 		main.prefWidthProperty().bind(stage.widthProperty());
 		
 		((Group) scene.getRoot()).getChildren().addAll(main);
-		stage.setHeight(550);
+		stage.setHeight(565);
 		stage.setWidth(300);
 		stage.setTitle("League Home");
 		stage.setScene(scene);
