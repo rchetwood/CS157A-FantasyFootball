@@ -535,7 +535,7 @@ public class GUI extends Application{
 		
 		HBox topRow = new HBox(leagueHomeLabel, topCenterRegion, backButton);
 		topRow.setSpacing(30);
-		topRow.setPadding(new Insets(10,30,0,30));
+		topRow.setPadding(new Insets(10,10,0,10));
 		
 		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Name");
 		TableColumn<Manager, Integer> managerPoints = new TableColumn<>("Points");
@@ -545,10 +545,17 @@ public class GUI extends Application{
 		managerName.setCellValueFactory(new PropertyValueFactory<Manager, String>("email"));
 		managerPoints.setCellValueFactory(new PropertyValueFactory<Manager, Integer>("points"));
 		
+		managerName.prefWidthProperty().bind(managerTable.widthProperty().multiply(0.8));
+		managerPoints.prefWidthProperty().bind(managerTable.widthProperty().multiply(0.2));
+		
+		managerPoints.setResizable(false);
+		managerName.setResizable(false);
+		
 		managerTable.setEditable(false);
 		managerTable.setItems(managers);
 		managerTable.getColumns().addAll(managerName, managerPoints);
 		managerTable.getSortOrder().add(managerPoints);
+		managerTable.prefWidthProperty().bind(scene.widthProperty());
 		
 		Button viewPlayersButton = new Button("View Players");
 		
@@ -559,21 +566,17 @@ public class GUI extends Application{
 			}
 		});
 		
-		Region bottomRowRegion = new Region();
-		HBox.setHgrow(bottomRowRegion, Priority.ALWAYS);
-		
-		HBox bottomRow = new HBox(managerTable, bottomRowRegion, viewPlayersButton);
 		
 		
-		VBox main = new VBox(topRow, bottomRow);
+		VBox main = new VBox(topRow, managerTable, viewPlayersButton);
 		main.setAlignment(Pos.TOP_CENTER);
-		main.setSpacing(50);
+		main.setSpacing(20);
 		main.setPadding(new Insets(10,10,10,10));
 		main.prefWidthProperty().bind(stage.widthProperty());
 		
 		((Group) scene.getRoot()).getChildren().addAll(main);
-		stage.setHeight(500);
-		stage.setWidth(600);
+		stage.setHeight(550);
+		stage.setWidth(300);
 		stage.setTitle("League Home");
 		stage.setScene(scene);
 		stage.show();
@@ -757,6 +760,20 @@ public class GUI extends Application{
 			}
 		});
 		
+		Button backButton = new Button("Back");
+		
+		backButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showLeagueHome(stage,account,league);
+			}
+		});
+		
+		Region bottomCenterRegion = new Region();
+		HBox.setHgrow(bottomCenterRegion, Priority.ALWAYS);
+		
+		Button confirmButton = new Button("Confirm");
+		
 		// Group each table with its own label
 		final VBox managerBox = new VBox();
         managerBox.setSpacing(5);
@@ -787,11 +804,18 @@ public class GUI extends Application{
         		BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(1))));
         statsBox.getChildren().addAll(selectedPlayerLabel, selectedStatsLabel);
         
+        final HBox bottomRow = new HBox(backButton, bottomCenterRegion, confirmButton);
+        bottomRow.setSpacing(10);
+        bottomRow.setPadding(new Insets(10,10,0,10));
+        bottomRow.prefWidthProperty().bind(scene.widthProperty());
+        
         final VBox draftBox = new VBox();
         draftBox.setSpacing(1);
         draftBox.setPadding(new Insets(10, 0, 0, 10));
         draftBox.prefWidthProperty().bind(scene.widthProperty());
-        draftBox.getChildren().addAll(statsBox, tableBox);
+        draftBox.getChildren().addAll(statsBox, tableBox, bottomRow);
+        
+        
 		
         ((Group) scene.getRoot()).getChildren().addAll(draftBox);
         
