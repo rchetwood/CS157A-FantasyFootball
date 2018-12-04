@@ -10,6 +10,8 @@ import Models.Player;
 import DAOs.*;
 import Exceptions.*;
 import javafx.application.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +37,10 @@ import javafx.scene.text.Font;
 import javafx.collections.*;
 import javafx.stage.*;
 import javafx.util.Callback;
+
+import java.util.List;
+import java.util.Random;
+import javafx.util.converter.NumberStringConverter;
 
 @SuppressWarnings("restriction")
 public class GUI extends Application{
@@ -185,13 +192,13 @@ public class GUI extends Application{
 		
 		
 		//Get leagues
-		ObservableList<Manager> managers = FXCollections.observableArrayList();
-		managers.add(new Manager());
-		managers.add(new Manager());
-		managers.add(new Manager());
-		managers.add(new Manager());
-		managers.add(new Manager());
-		managers.add(new Manager());
+		List<League> leagues = null;
+		try {
+			leagues = ManagerDAO.retrieveAllLeaguesFromAccount(account.getEmail());
+		} catch (ManagerDAOException ldaoe) {
+			System.out.println(ldaoe.getMessage());
+		}
+		
 		
 		
 		Scene scene = new Scene(new Group());
@@ -222,7 +229,7 @@ public class GUI extends Application{
 		
 		final VBox main = new VBox();
 		
-		ScrollPane leagues = new ScrollPane();
+		ScrollPane leagueScrollPane = new ScrollPane();
 		
 		HBox leaguesHbox = new HBox();
 		
@@ -231,12 +238,15 @@ public class GUI extends Application{
 		leaguesHbox.setSpacing(30);
 		
 		
-		for(Manager m : managers) {
-			Label leagueTitle = new Label("Sample Title");
+		for(League l : leagues) {
+			Label leagueTitle = new Label(l.getLeagueName());
+			
+			Label numberOfPlayers = new Label("# of players: " + l.getNumber_of_teams());
 			
 			Button openLeagueButton = new Button("Open");
 			
 			final League league = new League();
+			
 			
 			Region tileCenterRegion = new Region();
 			VBox.setVgrow(tileCenterRegion, Priority.ALWAYS);
@@ -249,7 +259,7 @@ public class GUI extends Application{
 			});
 			
 			
-			VBox leagueTile = new VBox(leagueTitle, tileCenterRegion, openLeagueButton);
+			VBox leagueTile = new VBox(leagueTitle, numberOfPlayers, tileCenterRegion, openLeagueButton);
 			leagueTile.setAlignment(Pos.TOP_CENTER);
 			leagueTile.setPadding(new Insets(10,10,10,10));
 			leagueTile.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
@@ -257,7 +267,7 @@ public class GUI extends Application{
 		}
 		
 		
-		leagues.setContent(leaguesHbox);
+		leagueScrollPane.setContent(leaguesHbox);
 		
 		Button createLeagueButton = new Button("Create League");
 		
@@ -275,7 +285,7 @@ public class GUI extends Application{
 		main.setAlignment(Pos.TOP_CENTER);
 		main.prefWidthProperty().bind(stage.widthProperty());
 		main.prefHeightProperty().bind(stage.heightProperty());
-		main.getChildren().addAll(topRow, leagueLabel, leagues, createLeagueButton);
+		main.getChildren().addAll(topRow, leagueLabel, leagueScrollPane, createLeagueButton);
 		
 		((Group) scene.getRoot()).getChildren().addAll(main);
 		stage.setWidth(600);
@@ -294,7 +304,18 @@ public class GUI extends Application{
 		
 		final Label numTeamsLabel = new Label("Number of Teams: ");
 		
-		final TextField numTeams = new TextField("");
+		final TextField numTeams = new TextField();
+		
+		numTeams.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                for(String s : newValue.split("")) {
+                	if(!"0123456789".contains(s)) {
+                		numTeams.setText(oldValue);
+                	}
+                }
+            }
+        });
 		
 		final League league = new League();
 		
@@ -317,14 +338,22 @@ public class GUI extends Application{
 		createBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				String num = numTeams.getText();
-				if (!num.isEmpty() && league.getDraft_date() != null && leagueName.getText() != null) {
-					// SQL statement here
-					// Add League to DB
-					System.out.println(numTeams.getText());
-					showProfile(stage, account);
-				} else {
-					System.out.println("Empty");
+				league.setLeagueName(leagueName.getText());
+				league.setNumber_of_teams(Integer.parseInt(numTeams.getText()));
+				league.setLeagueID(new Random().nextInt(2147483647));
+				try {
+					LeagueDAO.create(league);
+					Manager manager = new Manager();
+					manager.setEmail(account.getEmail());
+					manager.setLeague_id(league.getLeagueID());
+					try {
+						ManagerDAO.create(manager);
+						showProfile(stage, account);
+					} catch (ManagerDAOException mdaoe) {
+						System.out.println(mdaoe.getMessage());
+					}
+				} catch (LeagueDAOException ldaoe) {
+					System.out.println(ldaoe.getMessage());
 				}
 			}
 		});
