@@ -51,4 +51,9 @@ public class Player {
 	public void setOffensiveStatsID(int offensiveStatsID) {
 		this.offensiveStatsID = offensiveStatsID;
 	}
+	
+	@Override
+	public String toString() {
+		return "Name: " + firstName + " " + lastName + "  Position: " + position;
+	}
 }
