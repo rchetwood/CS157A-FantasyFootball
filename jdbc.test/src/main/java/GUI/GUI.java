@@ -758,7 +758,12 @@ public class GUI extends Application{
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
-					        selectedStatsLabel.setText("Stats here");
+					        try {
+					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
+					        } catch (OPSDAOException opsdaoe) {
+					        	System.out.println(opsdaoe.getMessage());
+					        }
+					        
 					        System.out.println(player);;
 					    }
 					}
@@ -789,7 +794,11 @@ public class GUI extends Application{
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
-					        selectedStatsLabel.setText("Stats here");
+					        try {
+					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
+					        } catch (OPSDAOException opsdaoe) {
+					        	System.out.println(opsdaoe.getMessage());
+					        }
 					        System.out.println(player);;
 					    }
 					}

@@ -16,6 +16,13 @@ public class OffensivePerformanceStatistics {
 	private int misc_TD;
 	private int Points;
 	private int Offensive_Stats_ID;
+	
+	@Override
+	public String toString() {
+		return "PY: " + Passing_Yards + "  PTD: " + Passing_TD + "  PInt: " + Passing_Int + "  Rushes: " + Rushes + "  RSY: " + Rushing_Yards + "  RSTD: " + Rushing_TD
+				+ "  RCR: " + Receiving_Receptions + "  RCY: " + Receiving_Yards + "  RCTD: " + Receiving_TD + "  RCTG: " + Receiving_Target + "  TPC: " + TwoPointConversion
+				+ "  FMB: " + Fumbles + "  MTD: " + misc_TD;
+	}
 
 	public int getPassing_yards(){
 		return Passing_Yards;
