@@ -102,6 +102,7 @@ public class DefensivePerformanceStatisticsDAO {
 			ps.setInt(4, dps.getSafeties());
 			ps.setInt(5, dps.getBlocked_punts());
 			ps.setInt(6, dps.getPoints());
+			ps.setInt(7, dps.getDefensive_stats_id());
 			ps.execute();
 		}
 		catch (SQLException e) {
