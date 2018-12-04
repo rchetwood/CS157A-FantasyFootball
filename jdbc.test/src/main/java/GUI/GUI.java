@@ -520,6 +520,25 @@ public class GUI extends Application{
 			System.out.println(mdaoe.getMessage());
 		}
 		
+		for(Manager m : managers) {
+			int totalPoints = 0;
+			try {
+				for(Player p : RosterDAO.retrieveManagersRoster(m.getManagerID())) {
+					System.out.println(p);
+					try {
+						totalPoints += PlayerDAO.getPoints(p.getPlayerID());
+					} catch (OPSDAOException opsdaoe) {
+						System.out.println(opsdaoe.getMessage());
+					} catch (DPSDAOException dpsdaoe) {
+						System.out.println(dpsdaoe.getMessage());
+					}
+				}
+			} catch (RosterDAOException rdaoe) {
+				System.out.println(rdaoe.getMessage());
+			}
+			m.setPoints(totalPoints);
+		}
+		
 		final Label leagueHomeLabel = new Label("League Home");
 		
 		Region topCenterRegion = new Region();

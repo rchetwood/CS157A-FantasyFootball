@@ -4,6 +4,7 @@ public class Manager {
 	private int managerID;
 	private String email;
 	private int League_ID;
+	private int points;
 	
 	
 	@Override
@@ -64,5 +65,13 @@ public class Manager {
 
 	public void setLeague_id(int League_ID){
 		this.League_ID=League_ID;
+	}
+	
+	public int getPoints() {
+		return points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
 	}
 }

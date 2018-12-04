@@ -13,7 +13,7 @@ import Models.Player;
 
 public class PlayerDAO {
 	
-	public int getPoints(int playerID) throws OPSDAOException, DPSDAOException {
+	public static int getPoints(int playerID) throws OPSDAOException, DPSDAOException {
 		Connection conn = ConnectionFactory.getConnections();;
 		
 		try {
