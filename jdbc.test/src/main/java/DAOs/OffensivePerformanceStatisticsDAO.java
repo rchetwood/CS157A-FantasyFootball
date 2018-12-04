@@ -16,7 +16,7 @@ public class OffensivePerformanceStatisticsDAO {
 	private static final String RETRIEVE_ALL_O_STATS = 
 			"SELECT * FROM OffensivePerformanceStatistics";
 	private static final String RETRIEVE_O_STATS = 
-			"SELECT * FROM OffensivePerformanceStatistics WHERE Offensive_Stats_ID=?";
+			"SELECT * FROM Offensive_Performance_Statistics WHERE Offensive_Stats_ID=?";
 	private static final String UPDATE_O_STATS = 
 			"UPDATE DefensivePerformanceStatistics "
 			+ "SET Passing_Yards=?, Passing_TD=?, Passing_Int=?, "
@@ -150,7 +150,7 @@ public class OffensivePerformanceStatisticsDAO {
 		ops.setReceiving_yards(rs.getInt("Receiving_Yards"));
 		ops.setReceiving_td(rs.getInt("Receiving_TD"));
 		ops.setReceiving_target(rs.getInt("Receiving_Target"));
-		ops.setTwoPointConversion(rs.getInt("TwoPointConversions"));
+		ops.setTwoPointConversion(rs.getInt("Two_point_conversion"));
 		ops.setFumbles(rs.getInt("Fumbles"));
 		ops.setMisc_td(rs.getInt("misc_TD"));
 		ops.setPoints(rs.getInt("Points"));

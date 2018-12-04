@@ -24,7 +24,7 @@ public class DefensivePerformanceStatisticsDAO {
 	private static final String RETRIEVE_ALL_D_STATS = 
 			"SELECT * FROM DefensivePerformanceStatistics";
 	private static final String RETRIEVE_D_STATS = 
-			"SELECT * FROM DefensivePerformanceStatistics WHERE Defensive_Stats_ID=?";
+			"SELECT * FROM Defensive_Performance_Statistics WHERE Defensive_Stats_ID=?";
 	private static final String UPDATE_D_STATS = 
 			"UPDATE DefensivePerformanceStatistics "
 			+ "SET Interceptions=?, Fumbles_Recovered=?, Sacks=?, Safeties=?, Blocked_Punts=?, Points=? "
