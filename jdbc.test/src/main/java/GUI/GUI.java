@@ -278,6 +278,19 @@ public class GUI extends Application{
 			}
 		});
 		
+		Button joinLeagueButton = new Button("Join League");
+		
+		joinLeagueButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showJoinLeague(stage, account);
+			}
+		});
+		
+		HBox bottomRow = new HBox(createLeagueButton, joinLeagueButton);
+		bottomRow.setSpacing(50);
+		bottomRow.setAlignment(Pos.CENTER);
+		
 		
 		
 		main.setSpacing(10);
@@ -285,7 +298,7 @@ public class GUI extends Application{
 		main.setAlignment(Pos.TOP_CENTER);
 		main.prefWidthProperty().bind(stage.widthProperty());
 		main.prefHeightProperty().bind(stage.heightProperty());
-		main.getChildren().addAll(topRow, leagueLabel, leagueScrollPane, createLeagueButton);
+		main.getChildren().addAll(topRow, leagueLabel, leagueScrollPane, bottomRow);
 		
 		((Group) scene.getRoot()).getChildren().addAll(main);
 		stage.setWidth(600);
@@ -293,6 +306,104 @@ public class GUI extends Application{
 		stage.setTitle("Profile");
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	private void showJoinLeague(final Stage stage, final Account account) {
+		Scene scene = new Scene(new Group());
+		
+		List<League> availableLeagues = null;
+		
+		System.out.println(availableLeagues);
+		
+		try {
+			availableLeagues = LeagueDAO.retrieveAll();
+		} catch (LeagueDAOException ldaoe) {
+			System.out.println(ldaoe.getMessage());
+		}
+		
+		List<League> leaguesJoined = null;
+		try {
+			leaguesJoined = ManagerDAO.retrieveAllLeaguesFromAccount(account.getEmail());
+		} catch (ManagerDAOException mdaoe) {
+			System.out.print(mdaoe.getMessage());
+		}
+		
+		availableLeagues.removeAll(leaguesJoined);
+		
+		System.out.println(availableLeagues);
+		
+		final Label joinLeagueLabel = new Label("Available Leagues");
+		
+		Region topCenterRegion = new Region();
+		HBox.setHgrow(topCenterRegion, Priority.ALWAYS);
+		
+		Button backButton = new Button("Back");
+		
+		backButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showProfile(stage, account);
+			}
+		});
+		
+		final HBox topRow = new HBox(joinLeagueLabel, topCenterRegion, backButton);
+		topRow.setSpacing(10);
+		
+		ScrollPane leagueScrollPane = new ScrollPane();
+		
+		HBox leaguesHBox = new HBox();
+		
+		leaguesHBox.setPrefHeight(150);
+		leaguesHBox.setPadding(new Insets(10,10,10,10));
+		leaguesHBox.setSpacing(30);
+		
+		for(final League l : availableLeagues) {
+			Label leagueTitle = new Label(l.getLeagueName());
+			
+			
+			Button joinLeagueButton = new Button("Join");
+			
+			
+			Region tileCenterRegion = new Region();
+			VBox.setVgrow(tileCenterRegion, Priority.ALWAYS);
+			
+			joinLeagueButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) {
+					Manager m = new Manager();
+					m.setEmail(account.getEmail());
+					m.setLeague_id(l.getLeagueID());
+					try {
+						ManagerDAO.create(m);
+						showLeagueHome(stage, account, l);
+					} catch (ManagerDAOException mdaoe) {
+						System.out.println(mdaoe.getMessage());
+					}
+					
+				}
+			});
+			
+			
+			VBox leagueTile = new VBox(leagueTitle, tileCenterRegion, joinLeagueButton);
+			leagueTile.setAlignment(Pos.TOP_CENTER);
+			leagueTile.setPadding(new Insets(10,10,10,10));
+			leagueTile.setBorder(new Border(new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
+			leaguesHBox.getChildren().add(leagueTile);
+		}
+		
+		leagueScrollPane.setContent(leaguesHBox);
+		
+		
+		VBox main = new VBox(topRow, leagueScrollPane);
+		main.prefWidthProperty().bind(scene.widthProperty());
+		main.setSpacing(30);
+		main.setPadding(new Insets(10,20,10,20));
+		
+		((Group) scene.getRoot()).getChildren().add(main);
+		
+		stage.setTitle("Join League");
+		stage.setScene(scene);
+		
 	}
 	
 	private void showCreateLeague(final Stage stage, final Account account) {
@@ -392,8 +503,25 @@ public class GUI extends Application{
 		
 		final Label leagueHomeLabel = new Label("League Home");
 		
+		Region topCenterRegion = new Region();
+		HBox.setHgrow(topCenterRegion, Priority.ALWAYS);
+		
+		Button backButton = new Button("Back");
+
+		backButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				showProfile(stage, account);
+			}
+		});
+		
+		HBox topRow = new HBox(leagueHomeLabel, topCenterRegion, backButton);
+		topRow.setSpacing(30);
+		
 		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Name");
 		TableColumn<Manager, Integer> managerPoints = new TableColumn<>("Points");
+		
+		
 		
 		managerName.setCellValueFactory(new PropertyValueFactory<Manager, String>("name"));
 		managerPoints.setCellValueFactory(new PropertyValueFactory<Manager, Integer>("points"));
@@ -418,10 +546,7 @@ public class GUI extends Application{
 		HBox bottomRow = new HBox(managerTable, bottomRowRegion, viewPlayersButton);
 		
 		
-		
-		
-		
-		VBox main = new VBox(leagueHomeLabel, bottomRow);
+		VBox main = new VBox(topRow, bottomRow);
 		main.setAlignment(Pos.TOP_CENTER);
 		main.setSpacing(50);
 		main.setPadding(new Insets(10,10,10,10));
