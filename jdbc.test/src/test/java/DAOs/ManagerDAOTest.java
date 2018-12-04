@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,14 +40,20 @@ public class ManagerDAOTest {
 	private final int TEST_NUMBER_OF_TEAMS1 = 42;
 	private final java.sql.Date TEST_DRAFT_DATE1 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME1 = "TEST NAME 1";
+	private final int TEST_ID1 = new Random().nextInt(2147483647);
 
 	private final int TEST_NUMBER_OF_TEAMS2 = 314;
 	private final java.sql.Date TEST_DRAFT_DATE2 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME2 = "TEST NAME 2";
+	private final int TEST_ID2 = new Random().nextInt(2147483647);
 
 	private final int TEST_NUMBER_OF_TEAMS3 = 217;
 	private final java.sql.Date TEST_DRAFT_DATE3 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
+	private final String TEST_NAME3 = "TEST NAME 3";
+	private final int TEST_ID3 = new Random().nextInt(2147483647);
 
 	private final String RETRIEVE_TEST_MANAGER = "SELECT * FROM Manager "
 			+ "WHERE email=? AND League_ID=?";
@@ -79,6 +86,8 @@ public class ManagerDAOTest {
 			League league = new League();
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueID(TEST_ID1);
+			league.setLeagueName(TEST_NAME1);
 
 			AccountDAO.create(account);
 			LeagueDAO.create(league);
@@ -194,12 +203,18 @@ public class ManagerDAOTest {
 			// set values of leagues and managers
 			league1.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league1.setDraft_date(TEST_DRAFT_DATE1);
+			league1.setLeagueID(TEST_ID1);
+			league1.setLeagueName(TEST_NAME1);
 
 			league2.setNumber_of_teams(TEST_NUMBER_OF_TEAMS2);
 			league2.setDraft_date(TEST_DRAFT_DATE2);
+			league2.setLeagueID(TEST_ID2);
+			league2.setLeagueName(TEST_NAME2);
 
 			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
 			league3.setDraft_date(TEST_DRAFT_DATE3);
+			league3.setLeagueID(TEST_ID3);
+			league3.setLeagueName(TEST_NAME3);
 
 			LeagueDAO.create(league1);
 			LeagueDAO.create(league2);
@@ -412,12 +427,18 @@ public class ManagerDAOTest {
 			// set values of leagues and managers
 			league1.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league1.setDraft_date(TEST_DRAFT_DATE1);
+			league1.setLeagueID(TEST_ID1);
+			league1.setLeagueName(TEST_NAME1);
 
 			league2.setNumber_of_teams(TEST_NUMBER_OF_TEAMS2);
 			league2.setDraft_date(TEST_DRAFT_DATE2);
+			league2.setLeagueID(TEST_ID2);
+			league2.setLeagueName(TEST_NAME2);
 
 			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
 			league3.setDraft_date(TEST_DRAFT_DATE3);
+			league3.setLeagueID(TEST_ID3);
+			league3.setLeagueName(TEST_NAME3);
 
 			LeagueDAO.create(league1);
 			LeagueDAO.create(league2);
@@ -622,6 +643,8 @@ public class ManagerDAOTest {
 			League league = new League();
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueID(TEST_ID1);
+			league.setLeagueName(TEST_NAME1);
 			LeagueDAO.create(league);
 
 			// retrieve league for key
@@ -744,6 +767,8 @@ public class ManagerDAOTest {
 			// add values for league accounts and managers
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
+			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 
 			account1.setEmail(TEST_ACCOUNT_EMAIL1);
 			account1.setFirstname(TEST_FIRST_NAME1);
@@ -933,8 +958,10 @@ public class ManagerDAOTest {
 			AccountDAO.create(account);
 
 			League league = new League();
-			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
+			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 			LeagueDAO.create(league);
 
 			// retrieve league for key
