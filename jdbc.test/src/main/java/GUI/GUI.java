@@ -746,6 +746,7 @@ public class GUI extends Application{
 					    if (!row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 					        Player player = row.getItem();
 					        
+					        System.out.println(event.getButton());
 					        if (event.getClickCount() == 2 && roster.size() < 10) {
 					        	if(!playersToRemoveFromRoster.remove(player)) {
 					        		playersToAddToRoster.add(player);
@@ -758,11 +759,12 @@ public class GUI extends Application{
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
+					        /*
 					        try {
 					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
 					        } catch (OPSDAOException opsdaoe) {
 					        	System.out.println(opsdaoe.getMessage());
-					        }
+					        }*/
 					        
 					        System.out.println(player);;
 					    }
@@ -781,7 +783,6 @@ public class GUI extends Application{
 					public void handle(MouseEvent event) {
 					    if (!row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 					        Player player = row.getItem();
-					        
 					        if (event.getClickCount() == 2) {
 					        	if(!playersToAddToRoster.remove(player)) {
 					        		playersToRemoveFromRoster.add(player);
@@ -794,11 +795,12 @@ public class GUI extends Application{
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
+					        /*
 					        try {
 					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
 					        } catch (OPSDAOException opsdaoe) {
 					        	System.out.println(opsdaoe.getMessage());
-					        }
+					        }*/
 					        System.out.println(player);;
 					    }
 					}
