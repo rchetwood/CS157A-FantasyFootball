@@ -11,6 +11,15 @@ import Exceptions.DPSDAOException;
 import Models.DefensivePerformanceStatistics;
 
 public class DefensivePerformanceStatisticsDAO {
+	
+	public static int[] weightVector = {
+		6, // td
+		2, // interception
+		2, // fumble recovery
+		1, // sacks
+		2, // safeties
+		2, // blocked kicks
+	};
 
 	private static final String RETRIEVE_ALL_D_STATS = 
 			"SELECT * FROM DefensivePerformanceStatistics";
@@ -24,11 +33,6 @@ public class DefensivePerformanceStatisticsDAO {
 			"UPDATE DefensivePerformanceStatistics "
 			+ "SET Points=? WHERE Defensive_Stats_ID=?";
 			
-			
-	public void create(DefensivePerformanceStatistics obj) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public List<DefensivePerformanceStatistics> retrieveAll() throws DPSDAOException {
 		Connection conn = ConnectionFactory.getConnections();
@@ -59,7 +63,7 @@ public class DefensivePerformanceStatisticsDAO {
 		}
 	}
 
-	public DefensivePerformanceStatistics retrieve(int id) throws DPSDAOException {
+	public static DefensivePerformanceStatistics retrieve(int id) throws DPSDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		
 		try {

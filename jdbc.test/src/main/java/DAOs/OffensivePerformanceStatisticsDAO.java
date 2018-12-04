@@ -11,6 +11,7 @@ import Exceptions.OPSDAOException;
 import Models.OffensivePerformanceStatistics;
 
 public class OffensivePerformanceStatisticsDAO {
+	
 
 	private static final String RETRIEVE_ALL_O_STATS = 
 			"SELECT * FROM OffensivePerformanceStatistics";
@@ -62,7 +63,7 @@ public class OffensivePerformanceStatisticsDAO {
 		}
 	}
 
-	public OffensivePerformanceStatistics retrieve(int id) throws OPSDAOException {
+	public static OffensivePerformanceStatistics retrieve(int id) throws OPSDAOException {
 		Connection conn = ConnectionFactory.getConnections();
 		
 		try {
