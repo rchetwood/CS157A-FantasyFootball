@@ -14,18 +14,18 @@ public class OffensivePerformanceStatisticsDAO {
 	
 
 	private static final String RETRIEVE_ALL_O_STATS = 
-			"SELECT * FROM OffensivePerformanceStatistics";
+			"SELECT * FROM Offensive_Performance_Statistics";
 	private static final String RETRIEVE_O_STATS = 
 			"SELECT * FROM Offensive_Performance_Statistics WHERE Offensive_Stats_ID=?";
 	private static final String UPDATE_O_STATS = 
-			"UPDATE DefensivePerformanceStatistics "
+			"UPDATE Defensive_Performance_Statistics "
 			+ "SET Passing_Yards=?, Passing_TD=?, Passing_Int=?, "
 			+ "Rushes=?, Rushing_Yards=?, Rushing_TD=?, "
 			+ "Receiving_Receptions=?, Receiving_Yards=?, Receiving_TD=?, Receiving_Target=?, "
 			+ "TwoPointConversion=?, Fumbles=?, misc_TD=?, Points=? "
 			+ "WHERE Defensive_Stats_ID=?";
 	private static final String UPDATE_O_POINTS = 
-			"UPDATE OffensivePerformanceStatistics "
+			"UPDATE Offensive_Performance_Statistics "
 			+ "SET Points=? WHERE Offensive_Stats_ID=?";
 			
 			

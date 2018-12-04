@@ -22,15 +22,15 @@ public class DefensivePerformanceStatisticsDAO {
 	};
 
 	private static final String RETRIEVE_ALL_D_STATS = 
-			"SELECT * FROM DefensivePerformanceStatistics";
+			"SELECT * FROM Defensive_Performance_Statistics";
 	private static final String RETRIEVE_D_STATS = 
 			"SELECT * FROM Defensive_Performance_Statistics WHERE Defensive_Stats_ID=?";
 	private static final String UPDATE_D_STATS = 
-			"UPDATE DefensivePerformanceStatistics "
+			"UPDATE Defensive_Performance_Statistics "
 			+ "SET Interceptions=?, Fumbles_Recovered=?, Sacks=?, Safeties=?, Blocked_Punts=?, Points=? "
 			+ "WHERE Defensive_Stats_ID=?";
 	private static final String UPDATE_D_POINTS = 
-			"UPDATE DefensivePerformanceStatistics "
+			"UPDATE Defensive_Performance_Statistics "
 			+ "SET Points=? WHERE Defensive_Stats_ID=?";
 			
 
