@@ -26,6 +26,8 @@ public class ManagerDAO {
 	private static final String RETRIEVE_LEAGUES_ON_ACCOUNT = "SELECT * FROM League "
 			+ "WHERE League_ID IN (SELECT League_ID FROM Manager "
 			+ "WHERE email=?)";
+	private static final String RETRIEVE_MANAGER_FOR_LEAGUE = "SELECT * FROM Manager "
+			+ "WHERE League_ID = ? && email = ?";
 
 	public static void create(Manager manager) throws ManagerDAOException {
 		Connection conn = ConnectionFactory.getConnections();
@@ -50,6 +52,37 @@ public class ManagerDAO {
 				e.printStackTrace();
 			}
 		}	
+	}
+	
+	public static Manager retrieveManagerForLeague(String email, int leagueID) throws ManagerDAOException {
+		Connection conn = ConnectionFactory.getConnections();
+		Manager manager = null;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(RETRIEVE_MANAGER_FOR_LEAGUE);
+			ps.setInt(1, leagueID);
+			ps.setString(2, email);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				manager = ManagerDAO.extractManager(rs);
+			} else {
+				throw new ManagerDAOException("Manager does not exist");
+			}
+			ps.close();
+			return manager;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ManagerDAOException("Unable to get manager for this account");
+		}
+		finally {
+			try {
+				conn.close();
+			}
+			catch (SQLException e) {
+				System.err.println("Unable to close connection");
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static List<League> retrieveAllLeaguesFromAccount(String email) throws ManagerDAOException {
