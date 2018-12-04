@@ -18,7 +18,7 @@ public class LeagueDAO {
 			+ "VALUES (?, ?, ?)";
 	private static final String RETRIEVE_ALL_LEAGUES = "SELECT * FROM League";
 	private static final String RETRIEVE_LEAGUE = "SELECT * FROM League WHERE League_ID=?";
-	private static final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=? "
+	private static final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=?, name=? "
 			+ "WHERE League_ID=?";
 	private static final String DELETE_LEAGUE = "DELETE FROM League WHERE League_ID=?";
 	
@@ -115,7 +115,8 @@ public class LeagueDAO {
 			PreparedStatement ps = conn.prepareStatement(UPDATE_LEAGUE);
 			ps.setInt(1, league.getNumber_of_teams());
 			ps.setDate(2, league.getDraft_date());
-			ps.setInt(3, league.getLeagueID());
+			ps.setString(3, league.getLeagueName());
+			ps.setInt(4, league.getLeagueID());
 			ps.execute();
 			ps.close();
 		}
@@ -163,6 +164,7 @@ public class LeagueDAO {
 		league.setLeagueID(rs.getInt("League_ID"));
 		league.setNumber_of_teams(rs.getInt("Number_of_Teams"));
 		league.setDraft_date(rs.getDate("Draft_Date", java.util.Calendar.getInstance()));
+		league.setLeagueName(rs.getString("name"));
 		return league;
 	}
 	
