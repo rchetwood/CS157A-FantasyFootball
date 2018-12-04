@@ -115,7 +115,7 @@ public class LeagueDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(UPDATE_LEAGUE);
 			ps.setInt(1, league.getNumber_of_teams());
-			ps.setDate(2, league.getDraft_date());
+			ps.setDate(2, league.getDraft_date(), java.util.Calendar.getInstance());
 			ps.setString(3, league.getLeagueName());
 			ps.setInt(4, league.getLeagueID());
 			ps.execute();

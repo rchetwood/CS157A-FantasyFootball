@@ -138,7 +138,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -228,7 +228,7 @@ public class ManagerDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -239,7 +239,7 @@ public class ManagerDAOTest {
 			ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
-			ps.setDate(2, TEST_DRAFT_DATE2);
+			ps.setDate(2, TEST_DRAFT_DATE2, java.util.Calendar.getInstance());
 
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -250,7 +250,7 @@ public class ManagerDAOTest {
 			ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
-			ps.setDate(2, TEST_DRAFT_DATE3);
+			ps.setDate(2, TEST_DRAFT_DATE3, java.util.Calendar.getInstance());
 
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -310,7 +310,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -321,7 +321,7 @@ public class ManagerDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
-				ps.setDate(2, TEST_DRAFT_DATE2);
+				ps.setDate(2, TEST_DRAFT_DATE2, java.util.Calendar.getInstance());
 
 				rs = ps.executeQuery();
 				if(rs.next()) {
@@ -332,7 +332,7 @@ public class ManagerDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
-				ps.setDate(2, TEST_DRAFT_DATE3);
+				ps.setDate(2, TEST_DRAFT_DATE3, java.util.Calendar.getInstance());
 
 				rs = ps.executeQuery();
 				if(rs.next()) {
@@ -452,7 +452,7 @@ public class ManagerDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -463,7 +463,7 @@ public class ManagerDAOTest {
 			ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
-			ps.setDate(2, TEST_DRAFT_DATE2);
+			ps.setDate(2, TEST_DRAFT_DATE2, java.util.Calendar.getInstance());
 
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -474,7 +474,7 @@ public class ManagerDAOTest {
 			ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
-			ps.setDate(2, TEST_DRAFT_DATE3);
+			ps.setDate(2, TEST_DRAFT_DATE3, java.util.Calendar.getInstance());
 
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -534,7 +534,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -545,7 +545,7 @@ public class ManagerDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
-				ps.setDate(2, TEST_DRAFT_DATE2);
+				ps.setDate(2, TEST_DRAFT_DATE2, java.util.Calendar.getInstance());
 
 				rs = ps.executeQuery();
 				if(rs.next()) {
@@ -556,7 +556,7 @@ public class ManagerDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
-				ps.setDate(2, TEST_DRAFT_DATE3);
+				ps.setDate(2, TEST_DRAFT_DATE3, java.util.Calendar.getInstance());
 
 				rs = ps.executeQuery();
 				if(rs.next()) {
@@ -651,7 +651,7 @@ public class ManagerDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -703,7 +703,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -796,7 +796,7 @@ public class ManagerDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, league.getNumber_of_teams());
-			ps.setDate(2, league.getDraft_date());
+			ps.setDate(2, league.getDraft_date(), java.util.Calendar.getInstance());
 
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -854,7 +854,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -968,7 +968,7 @@ public class ManagerDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -1023,7 +1023,7 @@ public class ManagerDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {

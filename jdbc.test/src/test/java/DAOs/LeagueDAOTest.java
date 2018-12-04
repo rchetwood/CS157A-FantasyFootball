@@ -69,7 +69,7 @@ public class LeagueDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 			
 			// execute statement
 			ResultSet rs = ps.executeQuery();
@@ -92,7 +92,7 @@ public class LeagueDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 				
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
@@ -171,7 +171,7 @@ public class LeagueDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 				ResultSet rs1 = ps.executeQuery(); 
 				if(rs1.next())
 					league1 = LeagueDAO.extractLeague(rs1);
@@ -180,7 +180,7 @@ public class LeagueDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS2);
-				ps.setDate(2, TEST_DRAFT_DATE2);
+				ps.setDate(2, TEST_DRAFT_DATE2, java.util.Calendar.getInstance());
 				ResultSet rs2 = ps.executeQuery();
 				if(rs2.next())
 					league2 = LeagueDAO.extractLeague(rs2);
@@ -189,7 +189,7 @@ public class LeagueDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS3);
-				ps.setDate(2, TEST_DRAFT_DATE3);
+				ps.setDate(2, TEST_DRAFT_DATE3, java.util.Calendar.getInstance());
 				ResultSet rs3 = ps.executeQuery();
 				if(rs3.next())
 					league3 = LeagueDAO.extractLeague(rs3);
@@ -233,7 +233,7 @@ public class LeagueDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
 				resultLeague = LeagueDAO.extractLeague(rs);
@@ -254,7 +254,7 @@ public class LeagueDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 				ResultSet rs1 = ps.executeQuery(); 
 				if(rs1.next())
 					league1 = LeagueDAO.extractLeague(rs1);
@@ -289,13 +289,14 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 			
 			LeagueDAO.create(league);
 			
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
 				league = LeagueDAO.extractLeague(rs);
@@ -324,7 +325,7 @@ public class LeagueDAOTest {
 				ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, 6000);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 				ResultSet rs = ps.executeQuery();
 				if(rs.next())
 					league = LeagueDAO.extractLeague(rs);
@@ -359,6 +360,7 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 
 			// create the league in sb
 			LeagueDAO.create(league);
@@ -366,7 +368,7 @@ public class LeagueDAOTest {
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 					+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 			ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-			ps.setDate(2, TEST_DRAFT_DATE1);
+			ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 			
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
@@ -393,7 +395,7 @@ public class LeagueDAOTest {
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM League "
 						+ "WHERE Number_of_Teams=? AND Draft_Date=?");
 				ps.setInt(1, TEST_NUMBER_OF_TEAMS1);
-				ps.setDate(2, TEST_DRAFT_DATE1);
+				ps.setDate(2, TEST_DRAFT_DATE1, java.util.Calendar.getInstance());
 				
 				ResultSet rs = ps.executeQuery();
 				if(rs.next()) {
