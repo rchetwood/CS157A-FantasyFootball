@@ -12,6 +12,7 @@ import Exceptions.*;
 import javafx.application.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -238,14 +239,13 @@ public class GUI extends Application{
 		leaguesHbox.setSpacing(30);
 		
 		
-		for(League l : leagues) {
+		for(final League l : leagues) {
 			Label leagueTitle = new Label(l.getLeagueName());
 			
 			Label numberOfPlayers = new Label("# of players: " + l.getNumber_of_teams());
 			
 			Button openLeagueButton = new Button("Open");
 			
-			final League league = new League();
 			
 			
 			Region tileCenterRegion = new Region();
@@ -254,7 +254,7 @@ public class GUI extends Application{
 			openLeagueButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					showLeagueHome(stage, account, league);
+					showLeagueHome(stage, account, l);
 				}
 			});
 			
@@ -499,7 +499,16 @@ public class GUI extends Application{
 		
 		TableView<Manager> managerTable = new TableView<>();
 		
-		final ObservableList<Manager> managers = FXCollections.observableArrayList();
+		ObservableList<Manager> managers = null;
+		System.out.println(league.getLeagueID());
+		
+		try {
+			managers = FXCollections.observableArrayList(ManagerDAO.retrieveAllManagerInLeague(league.getLeagueID()));
+		} catch (ManagerDAOException mdaoe) {
+			System.out.println(mdaoe.getMessage());
+		}
+
+		System.out.println(managers);
 		
 		final Label leagueHomeLabel = new Label("League Home");
 		
@@ -517,13 +526,14 @@ public class GUI extends Application{
 		
 		HBox topRow = new HBox(leagueHomeLabel, topCenterRegion, backButton);
 		topRow.setSpacing(30);
+		topRow.setPadding(new Insets(10,30,0,30));
 		
 		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Name");
 		TableColumn<Manager, Integer> managerPoints = new TableColumn<>("Points");
 		
 		
 		
-		managerName.setCellValueFactory(new PropertyValueFactory<Manager, String>("name"));
+		managerName.setCellValueFactory(new PropertyValueFactory<Manager, String>("email"));
 		managerPoints.setCellValueFactory(new PropertyValueFactory<Manager, Integer>("points"));
 		
 		managerTable.setEditable(false);
