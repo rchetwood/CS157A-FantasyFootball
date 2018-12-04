@@ -10,9 +10,10 @@ CREATE TABLE Account
 
 CREATE TABLE League
 (
-  League_ID INT NOT NULL AUTO_INCREMENT,
+  League_ID INT NOT NULL,
   Number_of_Teams INT NOT NULL CHECK(Number_of_Teams >= 2),
   Draft_Date DATE NOT NULL,
+  name VARCHAR(32) NOT NULL,
   PRIMARY KEY (League_ID)
 );
 
@@ -80,6 +81,3 @@ CREATE TABLE Roster (
   FOREIGN KEY (Manager_ID) REFERENCES Manager(Manager_ID),
   FOREIGN KEY (Player_ID) REFERENCES Player(Player_ID)
 );
-
-
-
