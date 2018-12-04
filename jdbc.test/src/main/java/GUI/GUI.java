@@ -500,15 +500,24 @@ public class GUI extends Application{
 		TableView<Manager> managerTable = new TableView<>();
 		
 		ObservableList<Manager> managers = null;
-		System.out.println(league.getLeagueID());
+		
+		Manager currentManager = null;
+		
+		try {
+			currentManager = ManagerDAO.retrieveManagerForLeague(account.getEmail(), league.getLeagueID());
+		} catch (ManagerDAOException mdaoe) {
+			System.out.println(mdaoe.getMessage());
+		}
+		
+		System.out.println(currentManager);
+		
+		final Manager currentManagerFinal = currentManager;
 		
 		try {
 			managers = FXCollections.observableArrayList(ManagerDAO.retrieveAllManagerInLeague(league.getLeagueID()));
 		} catch (ManagerDAOException mdaoe) {
 			System.out.println(mdaoe.getMessage());
 		}
-
-		System.out.println(managers);
 		
 		final Label leagueHomeLabel = new Label("League Home");
 		
@@ -546,7 +555,7 @@ public class GUI extends Application{
 		viewPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				showDraftPick(stage, account, league);
+				showDraftPick(stage, account, league, currentManagerFinal);
 			}
 		});
 		
@@ -572,21 +581,41 @@ public class GUI extends Application{
 		
 	}
 	
-	public void showDraftPick(final Stage stage, final Account account, final League league) {
+	public void showDraftPick(final Stage stage, final Account account, final League league, final Manager manager) {
 		
 		
 		TableView<Player> playerTable = new TableView<>();
 		TableView<Manager> managerTable = new TableView<>();
 		TableView<Player> rosterTable = new TableView<>();
 		
-		final ObservableList<Manager> managers =
-				FXCollections.observableArrayList();
+		ObservableList<Manager> m = null;
+				
+		try {
+			m = FXCollections.observableArrayList(ManagerDAO.retrieveAllManagerInLeague(league.getLeagueID()));
+		} catch (ManagerDAOException mdaoe) {
+			System.out.println(mdaoe.getMessage());
+		}
 		
-		final ObservableList<Player> players =
-	            FXCollections.observableArrayList();
+		final ObservableList<Manager> managers = m;
 		
-		final ObservableList<Player> roster =
-	            FXCollections.observableArrayList();
+		ObservableList<Player> p = null;
+		try {
+	        p = FXCollections.observableArrayList(RosterDAO.availablePlayers(manager.getManagerID()));
+		} catch (RosterDAOException rdaoe) {
+			System.out.println(rdaoe.getMessage());
+		}
+		
+		final ObservableList<Player> players = p;
+		
+		ObservableList<Player> r = null;
+		
+		try {
+			r = FXCollections.observableArrayList(RosterDAO.retrieveManagersRoster(manager.getManagerID()));
+		} catch (RosterDAOException rdaoe) {
+			System.out.println(rdaoe.getMessage());
+		}
+		
+		final ObservableList<Player> roster = r;
 		
 		Scene scene = new Scene(new Group());
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -625,13 +654,13 @@ public class GUI extends Application{
 		
 		playerFirstName.setCellValueFactory(new PropertyValueFactory<Player, String>("firstName"));
 		playerLastName.setCellValueFactory(new PropertyValueFactory<Player, String>("lastName"));
-		playerId.setCellValueFactory(new PropertyValueFactory<Player, Integer>("id"));
-		playerPosition.setCellValueFactory(new PropertyValueFactory<Player, String>("pos"));
+		playerId.setCellValueFactory(new PropertyValueFactory<Player, Integer>("playerID"));
+		playerPosition.setCellValueFactory(new PropertyValueFactory<Player, String>("position"));
 		
 		rosterFirstName.setCellValueFactory(new PropertyValueFactory<Player, String>("firstName"));
 		rosterLastName.setCellValueFactory(new PropertyValueFactory<Player, String>("lastName"));
-		rosterPlayerId.setCellValueFactory(new PropertyValueFactory<Player, Integer>("id"));
-		rosterPosition.setCellValueFactory(new PropertyValueFactory<Player, String>("pos"));
+		rosterPlayerId.setCellValueFactory(new PropertyValueFactory<Player, Integer>("playerID"));
+		rosterPosition.setCellValueFactory(new PropertyValueFactory<Player, String>("position"));
 		
 		// Add data to columns
 		playerTable.setEditable(false);
@@ -761,6 +790,7 @@ public class GUI extends Application{
         final VBox draftBox = new VBox();
         draftBox.setSpacing(1);
         draftBox.setPadding(new Insets(10, 0, 0, 10));
+        draftBox.prefWidthProperty().bind(scene.widthProperty());
         draftBox.getChildren().addAll(statsBox, tableBox);
 		
         ((Group) scene.getRoot()).getChildren().addAll(draftBox);
