@@ -24,17 +24,20 @@ public class LeagueDAOTest {
 	private final java.sql.Date TEST_DRAFT_DATE1 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
 	private final String TEST_NAME1 = "TEST NAME 1";
-	
+	private final int TEST_ID1 = new Random().nextInt(2147483647);
+
 	private final int TEST_NUMBER_OF_TEAMS2 = 314;
 	private final java.sql.Date TEST_DRAFT_DATE2 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
 	private final String TEST_NAME2 = "TEST NAME 2";
-	
+	private final int TEST_ID2 = new Random().nextInt(2147483647);
+
 	private final int TEST_NUMBER_OF_TEAMS3 = 217;
 	private final java.sql.Date TEST_DRAFT_DATE3 = 
 			new java.sql.Date(System.currentTimeMillis() - 25200000);
 	private final String TEST_NAME3 = "TEST NAME 3";
-
+	private final int TEST_ID3 = new Random().nextInt(2147483647);
+	
 	@Before
 	public void setUp() {
 
@@ -57,6 +60,7 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 			
 			// test function
 			LeagueDAO.create(league);
@@ -222,6 +226,7 @@ public class LeagueDAOTest {
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
 			league.setLeagueName(TEST_NAME1);
+			league.setLeagueID(TEST_ID1);
 			
 			LeagueDAO.create(league);
 			

@@ -1,14 +1,14 @@
 package Models;
 
 public class Roster {
-	private int accountID;
+	private int managerID;
 	private int playerID;
 	
-	public int getAccountID() {
-		return accountID;
+	public int getManagerID() {
+		return managerID;
 	}
-	public void setAccountID(int accountID) {
-		this.accountID = accountID;
+	public void setManagerID(int managerID) {
+		this.managerID = managerID;
 	}
 	public int getPlayerID() {
 		return playerID;
