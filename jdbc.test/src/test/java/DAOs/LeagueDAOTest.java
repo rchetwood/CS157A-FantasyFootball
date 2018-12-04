@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -131,14 +132,17 @@ public class LeagueDAOTest {
 			league1.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league1.setDraft_date(TEST_DRAFT_DATE1);
 			league1.setLeagueName(TEST_NAME1);
+			league1.setLeagueID(new Random().nextInt(2147483647));
 			
 			league2.setNumber_of_teams(TEST_NUMBER_OF_TEAMS2);
 			league2.setDraft_date(TEST_DRAFT_DATE2);
 			league2.setLeagueName(TEST_NAME2);
+			league2.setLeagueID(new Random().nextInt(2147483647));
 			
 			league3.setNumber_of_teams(TEST_NUMBER_OF_TEAMS3);
 			league3.setDraft_date(TEST_DRAFT_DATE3);
 			league3.setLeagueName(TEST_NAME3);
+			league3.setLeagueID(new Random().nextInt(2147483647));
 			
 			// insert leagues
 			LeagueDAO.create(league1);
@@ -217,6 +221,7 @@ public class LeagueDAOTest {
 			League resultLeague = new League();
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueName(TEST_NAME1);
 			
 			LeagueDAO.create(league);
 			
@@ -348,6 +353,7 @@ public class LeagueDAOTest {
 			// set values
 			league.setNumber_of_teams(TEST_NUMBER_OF_TEAMS1);
 			league.setDraft_date(TEST_DRAFT_DATE1);
+			league.setLeagueName(TEST_NAME1);
 
 			// create the league in sb
 			LeagueDAO.create(league);
@@ -391,7 +397,7 @@ public class LeagueDAOTest {
 				
 				ps = conn.prepareStatement("DELETE "
 						+ "FROM League "
-						+ "WHERE League_ID+?");
+						+ "WHERE League_ID=?");
 				ps.setInt(1, resultLeague.getLeagueID());
 				ps.executeUpdate();
 				ps.close();

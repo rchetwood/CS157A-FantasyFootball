@@ -229,12 +229,14 @@ public class AccountDAOTest {
 			acc.setEmail(TEST_EMAIL1);
 			acc.setPassword(TEST_PASSWORD1);
 
-			resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
-
-			assertTrue(resultAcc == null);
-		}
-		catch(AccountDAOException e) {
-			e.printStackTrace();
+			try {
+				resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
+			}
+			catch(AccountDAOException e) {
+				if(!e.getMessage().equals("Account does not exist")) {
+					fail();
+				}
+			}
 		}
 		finally {
 			try {
@@ -325,9 +327,14 @@ public class AccountDAOTest {
 			
 			AccountDAO.delete(acc.getEmail());
 			
-			resultAcc = AccountDAO.retrieve(acc.getEmail());
-			
-			assertTrue(resultAcc == null);
+			try {
+				resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
+			}
+			catch(AccountDAOException e) {
+				if(!e.getMessage().equals("Account does not exist")) {
+					fail();
+				}
+			}
 		}
 		catch(AccountDAOException e) {
 			e.printStackTrace();
@@ -371,9 +378,16 @@ public class AccountDAOTest {
 			
 			AccountDAO.delete(acc.getEmail());
 			
-			resultAcc = AccountDAO.retrieve(acc.getEmail());
+	
 			
-			assertTrue(resultAcc == null);
+			try {
+				resultAcc = AccountDAO.retrieve(TEST_EMAIL1);
+			}
+			catch(AccountDAOException e) {
+				if(!e.getMessage().equals("Account does not exist")) {
+					fail();
+				}
+			}
 		}
 		catch(AccountDAOException e) {
 			e.printStackTrace();
