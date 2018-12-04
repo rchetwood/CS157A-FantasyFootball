@@ -39,6 +39,7 @@ import javafx.collections.*;
 import javafx.stage.*;
 import javafx.util.Callback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javafx.util.converter.NumberStringConverter;
@@ -537,7 +538,7 @@ public class GUI extends Application{
 		topRow.setSpacing(30);
 		topRow.setPadding(new Insets(10,10,0,10));
 		
-		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Name");
+		TableColumn<Manager, String> managerName = new TableColumn<>("Manager Email");
 		TableColumn<Manager, Integer> managerPoints = new TableColumn<>("Points");
 		
 		
@@ -622,6 +623,10 @@ public class GUI extends Application{
 		
 		Scene scene = new Scene(new Group());
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		
+		final ArrayList<Player> playersToAddToRoster = new ArrayList<>();
+		
+		final ArrayList<Player> playersToRemoveFromRoster = new ArrayList<>();
 		
 		// Create Labels
 		final Label playerLabel = new Label("Players");
@@ -714,7 +719,10 @@ public class GUI extends Application{
 					    if (!row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 					        Player player = row.getItem();
 					        
-					        if (event.getClickCount() == 2) {
+					        if (event.getClickCount() == 2 && roster.size() < 10) {
+					        	if(!playersToRemoveFromRoster.remove(player)) {
+					        		playersToAddToRoster.add(player);
+					        	}
 					        	roster.add(player);
 					        	players.remove(player);
 					        }
@@ -743,6 +751,9 @@ public class GUI extends Application{
 					        Player player = row.getItem();
 					        
 					        if (event.getClickCount() == 2) {
+					        	if(!playersToAddToRoster.remove(player)) {
+					        		playersToRemoveFromRoster.add(player);
+					        	}
 					        	players.add(player);
 					        	roster.remove(player);
 					        }
@@ -773,6 +784,29 @@ public class GUI extends Application{
 		HBox.setHgrow(bottomCenterRegion, Priority.ALWAYS);
 		
 		Button confirmButton = new Button("Confirm");
+		
+		confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				for(Player p : playersToAddToRoster) {
+					try {
+						RosterDAO.addPlayer(manager.getManagerID(), p.getPlayerID());
+					} catch (RosterDAOException rdaoe) {
+						System.out.println(rdaoe.getMessage());
+					}
+				}
+				for(Player p : playersToRemoveFromRoster) {
+					try {
+						RosterDAO.deletePlayer(manager.getManagerID(), p.getPlayerID());
+					} catch (RosterDAOException rdaoe) {
+						System.out.println(rdaoe.getMessage());
+					}
+				}
+				System.out.println(playersToAddToRoster);
+				System.out.println(playersToRemoveFromRoster);
+				showLeagueHome(stage, account, league);
+			}
+		});
 		
 		// Group each table with its own label
 		final VBox managerBox = new VBox();
