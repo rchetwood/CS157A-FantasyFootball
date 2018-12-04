@@ -14,8 +14,8 @@ import Exceptions.LeagueDAOException;
 import Models.League;
 
 public class LeagueDAO {
-	private static final String CREATE_LEAGUE = "INSERT INTO League (Number_of_Teams, Draft_Date) "
-			+ "VALUES (?, ?)";
+	private static final String CREATE_LEAGUE = "INSERT INTO League (Number_of_Teams, Draft_Date, name) "
+			+ "VALUES (?, ?, ?)";
 	private static final String RETRIEVE_ALL_LEAGUES = "SELECT * FROM League";
 	private static final String RETRIEVE_LEAGUE = "SELECT * FROM League WHERE League_ID=?";
 	private static final String UPDATE_LEAGUE = "UPDATE League SET Number_of_Teams=?, Draft_Date=? "
@@ -28,6 +28,7 @@ public class LeagueDAO {
 			PreparedStatement ps = conn.prepareStatement(CREATE_LEAGUE);
 			ps.setInt(1, league.getNumber_of_teams());
 			ps.setDate(2, league.getDraft_date(), java.util.Calendar.getInstance());
+			ps.setString(3, league.getLeagueName());
 			ps.executeUpdate();
 			ps.close();
 		}
