@@ -745,28 +745,27 @@ public class GUI extends Application{
 					public void handle(MouseEvent event) {
 					    if (!row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 					        Player player = row.getItem();
-					        
-					        System.out.println(event.getButton());
-					        if (event.getClickCount() == 2 && roster.size() < 10) {
-					        	if(!playersToRemoveFromRoster.remove(player)) {
-					        		playersToAddToRoster.add(player);
-					        	}
-					        	roster.add(player);
-					        	players.remove(player);
-					        }
+					       
 					        // SQL Statement here
 					        selectedPlayerLabel.setText(player.getFirstName() 
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
-					        /*
+					        
 					        try {
 					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
 					        } catch (OPSDAOException opsdaoe) {
 					        	System.out.println(opsdaoe.getMessage());
-					        }*/
+					        }
 					        
 					        System.out.println(player);;
+					    } else if (!row.isEmpty() && event.getButton()==MouseButton.SECONDARY) {
+					    	Player player = row.getItem();
+					    	if(!playersToRemoveFromRoster.remove(player)) {
+				        		playersToAddToRoster.add(player);
+				        	}
+				        	roster.add(player);
+				        	players.remove(player);
 					    }
 					}
 				});
@@ -781,27 +780,30 @@ public class GUI extends Application{
 				row.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
+						System.out.println(event.getButton());
 					    if (!row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 					        Player player = row.getItem();
-					        if (event.getClickCount() == 2) {
-					        	if(!playersToAddToRoster.remove(player)) {
-					        		playersToRemoveFromRoster.add(player);
-					        	}
-					        	players.add(player);
-					        	roster.remove(player);
-					        }
+					        
+					        
 					        // SQL Statement here
 					        selectedPlayerLabel.setText(player.getFirstName() 
 					        	+ " " + player.getLastName()
 					        	+ " [" + player.getPosition() + "]\n");
 					        // Player stats here
-					        /*
+					        
 					        try {
 					        	selectedStatsLabel.setText(OffensivePerformanceStatisticsDAO.retrieve(player.getPlayerID()).toString());
 					        } catch (OPSDAOException opsdaoe) {
 					        	System.out.println(opsdaoe.getMessage());
-					        }*/
+					        }
 					        System.out.println(player);;
+					    } else if (!row.isEmpty() && event.getButton()==MouseButton.SECONDARY) {
+					    	 Player player = row.getItem();
+				        	if(!playersToAddToRoster.remove(player)) {
+				        		playersToRemoveFromRoster.add(player);
+				        	}
+				        	players.add(player);
+				        	roster.remove(player);
 					    }
 					}
 				});
